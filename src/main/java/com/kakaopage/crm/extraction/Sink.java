@@ -10,4 +10,12 @@ class Sink implements Step {
         this.name = name;
         this.relation = relation;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public Relation getRelation() {
+        return relation;
+    }
 }
