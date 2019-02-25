@@ -13,7 +13,7 @@ public class PredicateJsonDeserializer implements JsonDeserializer<Predicate> {
     private static final Map<String, Class<? extends Predicate>> predicateClasses = new HashMap<>();
 
     static {
-        Reflections reflections = new Reflections("com.kakaopage.global.crm.extraction.ra");
+        Reflections reflections = new Reflections("com.kakaopage.crm.extraction.predicates");
         Set<Class<? extends Predicate>> classes = reflections.getSubTypesOf(Predicate.class);
 
         for (Class<? extends Predicate> clss : classes) {

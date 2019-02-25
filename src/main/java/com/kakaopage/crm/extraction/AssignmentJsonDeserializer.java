@@ -15,7 +15,7 @@ public class AssignmentJsonDeserializer implements JsonDeserializer<Assignment> 
     private static final Map<String, Class<? extends RelationalOperation>> operationClasses = new HashMap<>();
 
     static {
-        Reflections reflections = new Reflections("com.kakaopage.global.crm.extraction.ra");
+        Reflections reflections = new Reflections("com.kakaopage.crm.extraction.relations");
         Set<Class<? extends RelationalOperation>> classes = reflections.getSubTypesOf(RelationalOperation.class);
 
         for (Class<? extends RelationalOperation> clss : classes) {

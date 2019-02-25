@@ -13,7 +13,7 @@ public class FunctionJsonDeserializer implements JsonDeserializer<Function> {
     private static final Map<String, Class<? extends Function>> functionClasses = new HashMap<>();
 
     static {
-        Reflections reflections = new Reflections("com.kakaopage.global.crm.extraction.ra");
+        Reflections reflections = new Reflections("com.kakaopage.crm.extraction.functions");
         Set<Class<? extends Function>> classes = reflections.getSubTypesOf(Function.class);
 
         for (Class<? extends Function> clss : classes) {
