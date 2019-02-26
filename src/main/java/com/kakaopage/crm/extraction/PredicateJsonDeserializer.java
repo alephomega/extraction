@@ -17,20 +17,20 @@ public class PredicateJsonDeserializer implements JsonDeserializer<Predicate> {
         Set<Class<? extends Predicate>> classes = reflections.getSubTypesOf(Predicate.class);
 
         for (Class<? extends Predicate> clss : classes) {
-            String operator = getOperator(clss);
+            String operator = getSymbol(clss);
             if (operator != null) {
                 predicateClasses.put(operator, clss);
             }
         }
     }
 
-    private static String getOperator(Class<? extends Operation> clss) {
-        Operator operator = clss.getAnnotation(Operator.class);
-        if (operator == null) {
+    private static String getSymbol(Class<? extends Operator> clss) {
+        Symbol symbol = clss.getAnnotation(Symbol.class);
+        if (symbol == null) {
             return null;
         }
 
-        return operator.value();
+        return symbol.value();
     }
 
     private static Class<? extends Predicate> findClass(String name) {
@@ -40,9 +40,9 @@ public class PredicateJsonDeserializer implements JsonDeserializer<Predicate> {
     @Override
     public Predicate deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
         JsonObject predicateJson = json.getAsJsonObject();
-        String operator = predicateJson.get("operator").getAsString();
-        Class<? extends Predicate> clss = findClass(operator);
+        String symbol = predicateJson.get("@Symbol").getAsString();
+        Class<? extends Predicate> clss = findClass(symbol);
 
-        return context.deserialize(predicateJson.get("operands"), clss);
+        return context.deserialize(predicateJson, clss);
     }
 }

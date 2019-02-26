@@ -1,20 +1,19 @@
 package com.kakaopage.crm.extraction.predicates;
 
-import com.kakaopage.crm.extraction.Operator;
+import com.kakaopage.crm.extraction.Symbol;
 import com.kakaopage.crm.extraction.Predicate;
+import com.kakaopage.crm.extraction.UnaryOperator;
 
 import java.util.List;
 
-@Operator("∧")
-class Conjunction implements LogicalOperation {
-
-    private final List<Predicate> predicates;
+@Symbol("∧")
+class Conjunction extends UnaryOperator<List<Predicate>> implements LogicalOperator {
 
     Conjunction(List<Predicate> predicates) {
-        this.predicates = predicates;
+        super(predicates);
     }
 
     public List<Predicate> getPredicates() {
-        return predicates;
+        return getSingleOperand();
     }
 }

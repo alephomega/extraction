@@ -1,9 +1,9 @@
 package com.kakaopage.crm.extraction.relations;
 
-import com.kakaopage.crm.extraction.Operator;
+import com.kakaopage.crm.extraction.Symbol;
 
-@Operator("-")
-public class Difference extends BinaryRelationalOperation {
+@Symbol("-")
+public class Difference extends BinaryRelationalAlgebraOperator {
 
     public Difference(Relation first, Relation second) {
         super(first, second);

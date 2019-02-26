@@ -1,10 +1,10 @@
 package com.kakaopage.crm.extraction.predicates;
 
 import com.kakaopage.crm.extraction.Function;
-import com.kakaopage.crm.extraction.Operator;
+import com.kakaopage.crm.extraction.Symbol;
 
-@Operator("<")
-class LessThan extends ComparativeOperation {
+@Symbol("<")
+class LessThan extends ComparativeOperator {
 
     LessThan(Function f1, Function f2) {
         super(f1, f2);

@@ -1,25 +1,20 @@
 package com.kakaopage.crm.extraction.relations;
 
-import com.kakaopage.crm.extraction.Operator;
+import com.kakaopage.crm.extraction.Symbol;
+import com.kakaopage.crm.extraction.Pair;
 
 import java.util.List;
 
-@Operator("ρ")
-public class Renaming extends UnaryRelationalOperation {
-    private final String name;
-    private final List<String> columns;
+@Symbol("ρ")
+public class Renaming extends UnaryRelationalAlgebraOperator {
+    private final List<Pair<String, String>> renamings;
 
-    Renaming(String name, List<String> columns, Relation relation) {
+    Renaming(List<Pair<String, String>> renamings, Relation relation) {
         super(relation);
-        this.name = name;
-        this.columns = columns;
+        this.renamings = renamings;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public List<String> getColumns() {
-        return columns;
+    public List<Pair<String, String>> getRenamings() {
+        return renamings;
     }
 }

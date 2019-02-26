@@ -17,20 +17,20 @@ public class FunctionJsonDeserializer implements JsonDeserializer<Function> {
         Set<Class<? extends Function>> classes = reflections.getSubTypesOf(Function.class);
 
         for (Class<? extends Function> clss : classes) {
-            String operator = getOperator(clss);
-            if (operator != null) {
-                functionClasses.put(operator, clss);
+            String identifier = getIdentifier(clss);
+            if (identifier != null) {
+                functionClasses.put(identifier, clss);
             }
         }
     }
 
-    private static String getOperator(Class<? extends Function> clss) {
-        Operator operator = clss.getAnnotation(Operator.class);
-        if (operator == null) {
+    private static String getIdentifier(Class<? extends Function> clss) {
+        FuncIdentifier identifier = clss.getAnnotation(FuncIdentifier.class);
+        if (identifier == null) {
             return null;
         }
 
-        return operator.value();
+        return identifier.value();
     }
 
     private static Class<? extends Function> findClass(String name) {
@@ -40,9 +40,9 @@ public class FunctionJsonDeserializer implements JsonDeserializer<Function> {
     @Override
     public Function deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
         JsonObject functionJson = json.getAsJsonObject();
-        String operator = functionJson.get("operator").getAsString();
+        String identifier = functionJson.get("@FuncIdentifier").getAsString();
 
-        Class<? extends Function> clss = findClass(operator);
-        return context.deserialize(functionJson.get("operands"), clss);
+        Class<? extends Function> clss = findClass(identifier);
+        return context.deserialize(functionJson, clss);
     }
 }

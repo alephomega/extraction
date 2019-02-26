@@ -1,9 +1,9 @@
 package com.kakaopage.crm.extraction.relations;
 
-import com.kakaopage.crm.extraction.Operator;
+import com.kakaopage.crm.extraction.Symbol;
 
-@Operator("⟗")
-class FullOuterJoin extends BinaryRelationalOperation {
+@Symbol("⟗")
+class FullOuterJoin extends BinaryRelationalAlgebraOperator {
 
     public FullOuterJoin(Relation first, Relation second) {
         super(first, second);

@@ -1,10 +1,11 @@
 package com.kakaopage.crm.extraction.functions;
 
+import com.kakaopage.crm.extraction.FuncIdentifier;
 import com.kakaopage.crm.extraction.Function;
-import com.kakaopage.crm.extraction.Operator;
 
-@Operator("constant")
+@FuncIdentifier("const")
 public class Constant<T> implements Function {
+
     private final T value;
 
     public Constant(T value) {

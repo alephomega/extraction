@@ -1,5 +1,5 @@
 package com.kakaopage.crm.extraction;
 
-public interface Predicate extends Operation {
+public interface Predicate extends Operator {
 
 }

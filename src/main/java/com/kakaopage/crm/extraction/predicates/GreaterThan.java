@@ -1,10 +1,10 @@
 package com.kakaopage.crm.extraction.predicates;
 
 import com.kakaopage.crm.extraction.Function;
-import com.kakaopage.crm.extraction.Operator;
+import com.kakaopage.crm.extraction.Symbol;
 
-@Operator(">")
-class GreaterThan extends ComparativeOperation {
+@Symbol(">")
+class GreaterThan extends ComparativeOperator {
 
     GreaterThan(Function f1, Function f2) {
         super(f1, f2);

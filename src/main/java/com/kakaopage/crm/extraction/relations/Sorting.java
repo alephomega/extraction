@@ -1,11 +1,11 @@
 package com.kakaopage.crm.extraction.relations;
 
-import com.kakaopage.crm.extraction.Operator;
+import com.kakaopage.crm.extraction.Symbol;
 
 import java.util.List;
 
-@Operator("τ")
-public class Sorting extends UnaryRelationalOperation {
+@Symbol("τ")
+public class Sorting extends UnaryRelationalAlgebraOperator {
     private final List<ColumnOrdering> orderings;
 
     public Sorting(List<ColumnOrdering> orderings, Relation relation) {

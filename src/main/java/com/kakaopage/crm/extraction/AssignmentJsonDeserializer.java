@@ -2,7 +2,7 @@ package com.kakaopage.crm.extraction;
 
 
 import com.google.gson.*;
-import com.kakaopage.crm.extraction.relations.RelationalOperation;
+import com.kakaopage.crm.extraction.relations.RelationalAlgebraOperator;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Type;
@@ -12,30 +12,30 @@ import java.util.Set;
 
 public class AssignmentJsonDeserializer implements JsonDeserializer<Assignment> {
 
-    private static final Map<String, Class<? extends RelationalOperation>> operationClasses = new HashMap<>();
+    private static final Map<String, Class<? extends RelationalAlgebraOperator>> operationClasses = new HashMap<>();
 
     static {
         Reflections reflections = new Reflections("com.kakaopage.crm.extraction.relations");
-        Set<Class<? extends RelationalOperation>> classes = reflections.getSubTypesOf(RelationalOperation.class);
+        Set<Class<? extends RelationalAlgebraOperator>> classes = reflections.getSubTypesOf(RelationalAlgebraOperator.class);
 
-        for (Class<? extends RelationalOperation> clss : classes) {
-            String operator = getOperator(clss);
-            if (operator != null) {
-                operationClasses.put(operator, clss);
+        for (Class<? extends RelationalAlgebraOperator> clss : classes) {
+            String symbol = getSymbol(clss);
+            if (symbol != null) {
+                operationClasses.put(symbol, clss);
             }
         }
     }
 
-    private static String getOperator(Class<? extends Operation> clss) {
-        Operator operator = clss.getAnnotation(Operator.class);
-        if (operator == null) {
+    private static String getSymbol(Class<? extends Operator> clss) {
+        Symbol symbol = clss.getAnnotation(Symbol.class);
+        if (symbol == null) {
             return null;
         }
 
-        return operator.value();
+        return symbol.value();
     }
 
-    private static Class<? extends Operation> findClass(String name) {
+    private static Class<? extends Operator> findClass(String name) {
         return operationClasses.get(name);
     }
 
@@ -46,23 +46,13 @@ public class AssignmentJsonDeserializer implements JsonDeserializer<Assignment> 
         String variable = assignmentJson.get("variable").getAsString();
         JsonObject operationJson = assignmentJson.getAsJsonObject("operation");
 
-        String operator = operationJson.get("operator").getAsString();
-        Class<? extends Operation> clss = findClass(operator);
+        String symbol = operationJson.get("@Symbol").getAsString();
+        Class<? extends Operator> clss = findClass(symbol);
         if (clss == null) {
             throw new RuntimeException();
         }
 
-        RelationalOperation operation = context.deserialize(operationJson.get("operands"), clss);
-        return new Assignment(variable, operation);
-    }
-
-    private Operation deserializeOperation(Map.Entry<String, JsonElement> description, JsonDeserializationContext context) {
-        String operator = description.getKey();
-        Class<? extends Operation> clss = findClass(operator);
-        if (clss == null) {
-            throw new RuntimeException();
-        }
-
-        return context.deserialize(description.getValue(), clss);
+        RelationalAlgebraOperator operator = context.deserialize(operationJson, clss);
+        return new Assignment(variable, operator);
     }
 }

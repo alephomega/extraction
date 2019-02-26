@@ -1,9 +1,9 @@
 package com.kakaopage.crm.extraction.relations;
 
-import com.kakaopage.crm.extraction.Operator;
+import com.kakaopage.crm.extraction.Symbol;
 
-@Operator("∩")
-public class Intersection extends BinaryRelationalOperation {
+@Symbol("∩")
+public class Intersection extends BinaryRelationalAlgebraOperator {
 
     public Intersection(Relation first, Relation second) {
         super(first, second);

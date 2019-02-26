@@ -2,6 +2,7 @@ package com.kakaopage.crm.extraction;
 
 
 import com.kakaopage.crm.extraction.relations.Relation;
+import com.kakaopage.crm.extraction.relations.RelationalAlgebraOperator;
 
 import java.util.*;
 
@@ -58,9 +59,10 @@ class Serializer {
         }
 
         private void add(Assignment assignment) {
-            Relation[] inputs = assignment.getOperation().inputs();
-            for (Relation input : inputs) {
-                link(input.getName(), assignment.getVariable());
+            RelationalAlgebraOperator operation = assignment.getOperation();
+            List<Relation> input = (List<Relation>) operation.getOperands();
+            for (Relation relation : input) {
+                link(relation.getName(), assignment.getVariable());
             }
         }
 

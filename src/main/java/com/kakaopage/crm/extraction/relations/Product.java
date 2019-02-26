@@ -1,16 +1,12 @@
 package com.kakaopage.crm.extraction.relations;
 
 
-import com.kakaopage.crm.extraction.Operator;
+import com.kakaopage.crm.extraction.Symbol;
 
-import java.util.List;
+@Symbol("⨯")
+public class Product extends BinaryRelationalAlgebraOperator {
 
-@Operator("⨯")
-public class Product implements RelationalOperation {
-    private List<Relation> relations;
-
-    @Override
-    public Relation[] inputs() {
-        return relations.toArray(new Relation[0]);
+    public Product(Relation _1, Relation _2) {
+        super(_1, _2);
     }
 }

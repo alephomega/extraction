@@ -1,17 +1,16 @@
 package com.kakaopage.crm.extraction.predicates;
 
-import com.kakaopage.crm.extraction.Operator;
+import com.kakaopage.crm.extraction.Symbol;
 import com.kakaopage.crm.extraction.Predicate;
+import com.kakaopage.crm.extraction.UnaryOperator;
 
-@Operator("¬")
-class Negation implements LogicalOperation {
-    private final Predicate predicate;
-
+@Symbol("¬")
+class Negation extends UnaryOperator<Predicate> implements LogicalOperator {
     Negation(Predicate predicate) {
-        this.predicate = predicate;
+        super(predicate);
     }
 
     public Predicate getPredicate() {
-        return predicate;
+        return getSingleOperand();
     }
 }
