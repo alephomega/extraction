@@ -1,6 +1,6 @@
 package com.kakaopage.crm.extraction;
 
-import com.kakaopage.crm.extraction.relations.Relation;
+import com.kakaopage.crm.extraction.ra.Relation;
 
 class Sink implements Step {
     private final String name;

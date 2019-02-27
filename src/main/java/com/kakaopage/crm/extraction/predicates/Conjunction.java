@@ -7,7 +7,7 @@ import com.kakaopage.crm.extraction.UnaryOperator;
 import java.util.List;
 
 @Symbol("∧")
-class Conjunction extends UnaryOperator<List<Predicate>> implements LogicalOperator {
+public class Conjunction extends UnaryOperator<List<Predicate>> implements LogicalOperator {
 
     Conjunction(List<Predicate> predicates) {
         super(predicates);

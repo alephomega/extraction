@@ -1,19 +1,19 @@
 package com.kakaopage.crm.extraction;
 
 public class Pair<F, S> {
-    private final F first;
-    private final S second;
+    private final F _1;
+    private final S _2;
 
-    public Pair(F first, S second) {
-        this.first = first;
-        this.second = second;
+    public Pair(F _1, S _2) {
+        this._1 = _1;
+        this._2 = _2;
     }
 
-    public F getFirst() {
-        return first;
+    public F first() {
+        return _1;
     }
 
-    public S getSecond() {
-        return second;
+    public S second() {
+        return _2;
     }
 }

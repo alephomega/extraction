@@ -2,13 +2,20 @@ package com.kakaopage.crm.extraction.athena;
 
 import com.kakaopage.crm.extraction.Function;
 
-import java.util.Map;
+class QueryContext {
 
-public class QueryContext {
     private Schema schema;
-    private Map<String, Function> naming;
+    private NamingContext naming = new NamingContext();
 
-    public Function getFunction(String alias) {
-        return naming.get(alias);
+    public Schema getSchema() {
+        return schema;
+    }
+
+    public void alias(String name, Function function) {
+        naming.alias(name, function);
+    }
+
+    public NamingContext getNamingContext() {
+        return naming;
     }
 }

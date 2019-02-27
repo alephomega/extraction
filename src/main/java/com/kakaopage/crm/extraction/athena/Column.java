@@ -4,7 +4,7 @@ import com.kakaopage.crm.extraction.Function;
 
 public class Column {
     private Function function;
-    private String alias;
+    private String name;
 
     public Function getFunction() {
         return function;
@@ -14,11 +14,19 @@ public class Column {
         this.function = function;
     }
 
-    public String getAlias() {
-        return alias;
+    public String getName() {
+        return name;
     }
 
-    public void setAlias(String alias) {
-        this.alias = alias;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String toQueryString() {
+        if (name == null) {
+            return function.toString();
+        }
+
+        return String.format("%s as %s", function, name);
     }
 }

@@ -1,11 +1,12 @@
 package com.kakaopage.crm.extraction.athena;
 
-import com.kakaopage.crm.extraction.Function;
 import com.kakaopage.crm.extraction.functions.Alias;
-import com.kakaopage.crm.extraction.relations.Grouping;
-import com.kakaopage.crm.extraction.relations.RelationalAlgebraOperator;
+import com.kakaopage.crm.extraction.ra.Grouping;
+import com.kakaopage.crm.extraction.ra.RelationalAlgebraOperator;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class GroupingDecorator implements QueryDecorator<Select> {
 
@@ -16,16 +17,10 @@ public class GroupingDecorator implements QueryDecorator<Select> {
         }
 
         Grouping grouping = (Grouping) operation;
-        List<Function> groupBy = grouping.getGroupBy();
+        List<Column> columns = Stream.concat(grouping.getGroupBy().stream(), grouping.getAggregations().stream())
+                .map(function -> Query.toColumn((Alias) function)).collect(Collectors.toList());
 
-        for (Function element : groupBy) {
-            Alias alias = (Alias) element;
-
-            Function by = alias.getFunction();
-            String name = alias.getAlias();
-
-
-        }
+        select.setColumns(columns);
 
         return select;
     }

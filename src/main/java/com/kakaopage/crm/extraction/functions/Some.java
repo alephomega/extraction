@@ -5,9 +5,9 @@ import com.kakaopage.crm.extraction.Function;
 
 @FuncIdentifier("some")
 public class Some implements Function {
-    private final Value of;
+    private final Function of;
 
-    public Some(Value of) {
+    public Some(Function of) {
         this.of = of;
     }
 

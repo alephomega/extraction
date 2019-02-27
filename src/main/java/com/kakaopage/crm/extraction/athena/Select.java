@@ -3,12 +3,13 @@ package com.kakaopage.crm.extraction.athena;
 import com.kakaopage.crm.extraction.Function;
 import com.kakaopage.crm.extraction.Predicate;
 import com.kakaopage.crm.extraction.functions.Value;
-import com.kakaopage.crm.extraction.relations.GroupingElement;
-import com.kakaopage.crm.extraction.relations.Relation;
+import com.kakaopage.crm.extraction.ra.GroupingElement;
+import com.kakaopage.crm.extraction.ra.Relation;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-class Select extends Query {
+public class Select extends Query {
 
     private boolean distinct = false;
     private List<Column> columns;
@@ -20,32 +21,25 @@ class Select extends Query {
     private String alias;
 
 
-    public void setColumnAlias(String name, String alias) {
-        Column column = findColumn(name);
+    public String toQueryString() {
+        QueryContext context = getContext();
+        return String.format("select %s from %s where %s", QuerySerializer.serialize(columns, context), QuerySerializer.serialize(from, context), QuerySerializer.serialize(condition, context));
+    }
+
+
+    public void aliasColumn(String name, String alias) {
+        Column column = column(name);
         if (column != null) {
-            column.setAlias(alias);
+            register(alias, new Value(name));
+            column.setName(alias);
         }
     }
 
-    private Column findColumn(String name) {
+    private Column column(String name) {
         for (Column column : columns) {
-            if (name.equals(getName(column))) {
+            if (name.equals(column.getName())) {
                 return column;
             }
-        }
-
-        return null;
-    }
-
-    private String getName(Column column) {
-        String alias = column.getAlias();
-        if (alias != null) {
-            return alias;
-        }
-
-        Function function = column.getFunction();
-        if (function instanceof Value) {
-            return ((Value) function).getAttribute();
         }
 
         return null;
@@ -64,7 +58,26 @@ class Select extends Query {
     }
 
     public void setColumns(List<Column> columns) {
-        this.columns = columns;
+        for (Column column : columns) {
+            register(column.getName(), column.getFunction());
+        }
+
+        this.columns = columns.stream().collect(Collectors.toList());
+    }
+
+    private void register(String name, Function function) {
+        QueryContext context = getContext();
+
+        if (name != null) {
+            if (function instanceof Value) {
+                String attribute = ((Value) function).getAttribute();
+                if (attribute.equals(name)) {
+                    return;
+                }
+            }
+
+            context.alias(name, function);
+        }
     }
 
     public Relation getFrom() {
@@ -98,4 +111,5 @@ class Select extends Query {
     public void setAlias(String alias) {
         this.alias = alias;
     }
+
 }

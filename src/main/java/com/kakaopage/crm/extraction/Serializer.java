@@ -1,8 +1,8 @@
 package com.kakaopage.crm.extraction;
 
 
-import com.kakaopage.crm.extraction.relations.Relation;
-import com.kakaopage.crm.extraction.relations.RelationalAlgebraOperator;
+import com.kakaopage.crm.extraction.ra.Relation;
+import com.kakaopage.crm.extraction.ra.RelationalAlgebraOperator;
 
 import java.util.*;
 

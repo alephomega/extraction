@@ -1,4 +1,4 @@
-package com.kakaopage.crm.extraction.relations;
+package com.kakaopage.crm.extraction.ra;
 
 import com.kakaopage.crm.extraction.Function;
 import com.kakaopage.crm.extraction.Symbol;

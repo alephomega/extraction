@@ -2,7 +2,7 @@ package com.kakaopage.crm.extraction;
 
 
 import com.google.gson.*;
-import com.kakaopage.crm.extraction.relations.RelationalAlgebraOperator;
+import com.kakaopage.crm.extraction.ra.RelationalAlgebraOperator;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Type;

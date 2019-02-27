@@ -7,10 +7,14 @@ import com.kakaopage.crm.extraction.functions.Constant;
 import java.util.List;
 
 @Symbol("∈")
-class In<T> extends ComparativeOperator {
+public class In<T> extends ComparativeOperator {
 
     In(Function value, Constant<List<T>> elements) {
         super(value, elements);
+    }
+
+    public Function getValue() {
+        return getFirstOperand();
     }
 
     public List<T> getElements() {

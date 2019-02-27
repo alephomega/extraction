@@ -2,8 +2,8 @@ package com.kakaopage.crm.extraction.athena;
 
 import com.kakaopage.crm.extraction.Function;
 import com.kakaopage.crm.extraction.functions.Alias;
-import com.kakaopage.crm.extraction.relations.Projection;
-import com.kakaopage.crm.extraction.relations.RelationalAlgebraOperator;
+import com.kakaopage.crm.extraction.ra.Projection;
+import com.kakaopage.crm.extraction.ra.RelationalAlgebraOperator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,16 +23,9 @@ public class ProjectionDecorator implements QueryDecorator<Select> {
             return select;
         }
 
-        QueryContext context = select.getContext();
         List<Column> columns = new ArrayList<>(attributes.size());
-        for (Function attribute : attributes) {
-            Alias alias = (Alias) attribute;
-
-            Column column = new Column();
-            column.setFunction(alias.getFunction());
-            column.setAlias(alias.getAlias());
-
-            columns.add(column);
+        for (Function function : attributes) {
+            columns.add(Query.toColumn((Alias) function));
         }
 
         select.setColumns(columns);

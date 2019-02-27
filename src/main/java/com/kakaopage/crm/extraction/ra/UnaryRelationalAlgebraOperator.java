@@ -1,4 +1,4 @@
-package com.kakaopage.crm.extraction.relations;
+package com.kakaopage.crm.extraction.ra;
 
 import java.util.Collections;
 import java.util.List;

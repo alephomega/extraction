@@ -1,8 +1,9 @@
 package com.kakaopage.crm.extraction;
 
-import com.kakaopage.crm.extraction.relations.RelationalAlgebraOperator;
+import com.kakaopage.crm.extraction.ra.RelationalAlgebraOperator;
 
 public class Assignment implements Step {
+
     private final String variable;
     private final RelationalAlgebraOperator operation;
 
