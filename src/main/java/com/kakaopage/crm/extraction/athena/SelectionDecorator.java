@@ -1,55 +1,33 @@
 package com.kakaopage.crm.extraction.athena;
 
 import com.kakaopage.crm.extraction.functions.Value;
-import com.kakaopage.crm.extraction.ra.RelationalAlgebraOperator;
+import com.kakaopage.crm.extraction.ra.Relation;
+import com.kakaopage.crm.extraction.ra.Schema;
 import com.kakaopage.crm.extraction.ra.Selection;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class SelectionDecorator implements QueryDecorator<Select> {
+public class SelectionDecorator implements StatementDecorator<SelectStatement, Selection> {
 
     @Override
-    public Select build(Select select, RelationalAlgebraOperator operation) {
-        if (!Selection.class.isAssignableFrom(operation.getClass())) {
-            return select;
-        }
+    public SelectStatement build(SelectStatement statement, Selection selection) {
+        Select select = new Select();
 
-        Selection selection = (Selection) operation;
-        select.setColumns(all());
-        select.setFrom(selection.getRelation());
-        select.setCondition(selection.getCondition());
+        statement.setSelect(select);
 
-        return select;
+        Relation relation = selection.getRelation();
+        statement.setFrom(new From(relation.getName()));
+
+        statement.setWhere(new Where(selection.getCondition()));
+
+        return statement;
     }
 
-    private List<Column> all() {
-        List<Column> columns = new ArrayList<>();
-        Column col1 = new Column();
-        col1.setFunction(new Value("customer"));
-        col1.setName("customer");
-        columns.add(col1);
+    private List<SelectExpression> all(Relation relation) {
+        Schema schema = relation.getSchema();
+        List<Schema.Attribute> attributes = schema.getAttributes();
 
-        Column col2 = new Column();
-        col2.setFunction(new Value("event"));
-        col2.setName("event");
-        columns.add(col2);
-
-        Column col3 = new Column();
-        col3.setFunction(new Value("frequency"));
-        col3.setName("frequency");
-        columns.add(col3);
-
-        Column col4 = new Column();
-        col4.setFunction(new Value("event.at"));
-        col4.setName("event.at");
-        columns.add(col4);
-
-        Column col5 = new Column();
-        col5.setFunction(new Value("event.meta"));
-        col5.setName("event.meta");
-        columns.add(col5);
-
-        return columns;
+        return attributes.stream().map(attribute -> new SelectExpression(new Value(attribute.getName()), attribute.getName())).collect(Collectors.toList());
     }
 }

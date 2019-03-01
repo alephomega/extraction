@@ -2,26 +2,22 @@ package com.kakaopage.crm.extraction.athena;
 
 import com.kakaopage.crm.extraction.functions.Alias;
 import com.kakaopage.crm.extraction.ra.Grouping;
-import com.kakaopage.crm.extraction.ra.RelationalAlgebraOperator;
 
-import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class GroupingDecorator implements QueryDecorator<Select> {
+public class GroupingDecorator implements StatementDecorator<SelectStatement, Grouping> {
 
     @Override
-    public Select build(Select select, RelationalAlgebraOperator operation) {
-        if (!Grouping.class.isAssignableFrom(operation.getClass())) {
-            return select;
-        }
+    public SelectStatement build(SelectStatement statement, Grouping grouping) {
+        Select select = statement.getSelect();
+        select.removeAll();
 
-        Grouping grouping = (Grouping) operation;
-        List<Column> columns = Stream.concat(grouping.getGroupBy().stream(), grouping.getAggregations().stream())
-                .map(function -> Query.toColumn((Alias) function)).collect(Collectors.toList());
+        Stream.concat(grouping.getGroupBy().stream(), grouping.getAggregations().stream())
+                .forEach(function -> {
+                    Alias alias = (Alias) function;
+                    select.add(alias.getFunction(), alias.getName());
+                });
 
-        select.setColumns(columns);
-
-        return select;
+        return statement;
     }
 }

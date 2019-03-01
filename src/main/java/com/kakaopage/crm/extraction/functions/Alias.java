@@ -7,18 +7,18 @@ import com.kakaopage.crm.extraction.Function;
 @FuncIdentifier("as")
 public class Alias implements Function {
     private final Function function;
-    private final String alias;
+    private final String name;
 
-    public Alias(Function function, String alias) {
+    public Alias(Function function, String name) {
         this.function = function;
-        this.alias = alias;
+        this.name = name;
     }
 
     public Function getFunction() {
         return function;
     }
 
-    public String getAlias() {
-        return alias;
+    public String getName() {
+        return name;
     }
 }

@@ -6,7 +6,7 @@ import com.kakaopage.crm.extraction.Symbol;
 @Symbol("=")
 public class Equal extends ComparativeOperator {
 
-    Equal(Function f1, Function f2) {
+    public Equal(Function f1, Function f2) {
         super(f1, f2);
     }
 }

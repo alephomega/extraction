@@ -6,9 +6,9 @@ import com.kakaopage.crm.extraction.ra.RelationalAlgebraOperator;
 
 import java.util.*;
 
-class Serializer {
+public class Serializer {
 
-    static List<Step> serialize(Extraction extraction) {
+    public static List<Step> serialize(Extraction extraction) {
         ExpressionTree tree = new ExpressionTree(extraction);
 
         Sink sink = extraction.getSink();

@@ -3,33 +3,26 @@ package com.kakaopage.crm.extraction.athena;
 import com.kakaopage.crm.extraction.Function;
 import com.kakaopage.crm.extraction.functions.Alias;
 import com.kakaopage.crm.extraction.ra.Projection;
-import com.kakaopage.crm.extraction.ra.RelationalAlgebraOperator;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ProjectionDecorator implements QueryDecorator<Select> {
+public class ProjectionDecorator implements StatementDecorator<SelectStatement, Projection> {
 
     @Override
-    public Select build(Select select, RelationalAlgebraOperator operation) {
-        if (!Projection.class.isAssignableFrom(operation.getClass())) {
-            return select;
-        }
-
-        Projection projection = (Projection) operation;
-
+    public SelectStatement build(SelectStatement statement, Projection projection) {
         List<Function> attributes = projection.getAttributes();
         if (attributes.isEmpty()) {
-            return select;
+            return statement;
         }
 
-        List<Column> columns = new ArrayList<>(attributes.size());
+        Select select = statement.getSelect();
+        select.removeAll();
+
         for (Function function : attributes) {
-            columns.add(Query.toColumn((Alias) function));
+            Alias alias = (Alias) function;
+            select.add(alias.getFunction(), alias.getName());
         }
 
-        select.setColumns(columns);
-
-        return select;
+        return statement;
     }
 }

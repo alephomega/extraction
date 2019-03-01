@@ -12,11 +12,11 @@ public class BinaryOperator<F, S> implements Operator {
         this._2 = _2;
     }
 
-    public F getFirstOperand() {
+    public F firstOperand() {
         return _1;
     }
 
-    public S getSecondOperand() {
+    public S secondOperand() {
         return _2;
     }
 

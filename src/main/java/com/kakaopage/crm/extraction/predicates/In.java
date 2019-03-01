@@ -14,11 +14,11 @@ public class In<T> extends ComparativeOperator {
     }
 
     public Function getValue() {
-        return getFirstOperand();
+        return firstOperand();
     }
 
     public List<T> getElements() {
-        Constant<List<T>> _2 = (Constant<List<T>>) getSecondOperand();
+        Constant<List<T>> _2 = (Constant<List<T>>) secondOperand();
         return _2.getValue();
     }
 }

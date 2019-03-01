@@ -1,25 +1,21 @@
 package com.kakaopage.crm.extraction.athena;
 
 import com.kakaopage.crm.extraction.Pair;
-import com.kakaopage.crm.extraction.ra.RelationalAlgebraOperator;
 import com.kakaopage.crm.extraction.ra.Renaming;
 
 import java.util.List;
 
-public class RenamingDecorator implements QueryDecorator<Select> {
+public class RenamingDecorator implements StatementDecorator<SelectStatement, Renaming> {
 
     @Override
-    public Select build(Select select, RelationalAlgebraOperator operation) {
-        if (!Renaming.class.isAssignableFrom(operation.getClass())) {
-            return select;
-        }
-
-        Renaming renaming = (Renaming) operation;
+    public SelectStatement build(SelectStatement statement, Renaming renaming) {
         List<Pair<String, String>> pairs = renaming.getRenamings();
+
+        Select select = statement.getSelect();
         for (Pair<String, String> pair : pairs) {
-            select.aliasColumn(pair.first(), pair.second());
+            select.alias(pair.first(), pair.second());
         }
 
-        return select;
+        return statement;
     }
 }

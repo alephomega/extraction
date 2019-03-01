@@ -2,9 +2,14 @@ package com.kakaopage.crm.extraction.athena;
 
 import com.kakaopage.crm.extraction.Function;
 
-public class Column {
+public class SelectExpression {
     private Function function;
     private String name;
+
+    public SelectExpression(Function function, String name) {
+        this.function = function;
+        this.name = name;
+    }
 
     public Function getFunction() {
         return function;
@@ -22,7 +27,8 @@ public class Column {
         this.name = name;
     }
 
-    public String toQueryString() {
+    @Override
+    public String toString() {
         if (name == null) {
             return function.toString();
         }

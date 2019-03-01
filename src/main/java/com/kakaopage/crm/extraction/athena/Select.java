@@ -1,115 +1,67 @@
 package com.kakaopage.crm.extraction.athena;
 
 import com.kakaopage.crm.extraction.Function;
-import com.kakaopage.crm.extraction.Predicate;
-import com.kakaopage.crm.extraction.functions.Value;
-import com.kakaopage.crm.extraction.ra.GroupingElement;
-import com.kakaopage.crm.extraction.ra.Relation;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class Select extends Query {
+public class Select extends Clause {
+    private final List<SelectExpression> selectExpressions = new ArrayList<>();
 
-    private boolean distinct = false;
-    private List<Column> columns;
-
-    private Relation from;
-    private Predicate condition;
-
-    private List<GroupingElement> groupBy;
-    private String alias;
-
-
-    public String toQueryString() {
-        QueryContext context = getContext();
-        return String.format("select %s from %s where %s", QuerySerializer.serialize(columns, context), QuerySerializer.serialize(from, context), QuerySerializer.serialize(condition, context));
+    public void add(Function function) {
+        add(function, null);
     }
 
+    public void add(Function function, String alias) {
+        selectExpressions.add(new SelectExpression(function, alias));
+    }
 
-    public void aliasColumn(String name, String alias) {
-        Column column = column(name);
-        if (column != null) {
-            register(alias, new Value(name));
-            column.setName(alias);
+    public void remove(String name) {
+        int i = indexOf(name);
+        if (i != -1) {
+            selectExpressions.remove(i);
         }
     }
 
-    private Column column(String name) {
-        for (Column column : columns) {
-            if (name.equals(column.getName())) {
-                return column;
+    public void removeAll() {
+        selectExpressions.clear();
+    }
+
+    public void alias(String name, String alias) {
+        SelectExpression expression = findExpression(name);
+        if (expression != null) {
+            expression.setName(alias);
+        }
+    }
+
+    public Function column(String name) {
+        SelectExpression expression = findExpression(name);
+        return expression == null ? null : expression.getFunction();
+    }
+
+    private SelectExpression findExpression(String name) {
+        for (SelectExpression expression : selectExpressions) {
+            if (name.equals(expression.getName())) {
+                return expression;
             }
         }
 
         return null;
     }
 
-    public boolean isDistinct() {
-        return distinct;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public List<Column> getColumns() {
-        return columns;
-    }
-
-    public void setColumns(List<Column> columns) {
-        for (Column column : columns) {
-            register(column.getName(), column.getFunction());
-        }
-
-        this.columns = columns.stream().collect(Collectors.toList());
-    }
-
-    private void register(String name, Function function) {
-        QueryContext context = getContext();
-
-        if (name != null) {
-            if (function instanceof Value) {
-                String attribute = ((Value) function).getAttribute();
-                if (attribute.equals(name)) {
-                    return;
-                }
+    private int indexOf(String name) {
+        for (int i = 0; i < selectExpressions.size(); i++) {
+            if (name.equals(selectExpressions.get(i).getName())) {
+                return i;
             }
-
-            context.alias(name, function);
         }
+
+        return -1;
     }
 
-    public Relation getFrom() {
-        return from;
+    @Override
+    public String stringify(StatementContext context) {
+        return String.format("select %s", StringUtils.join(selectExpressions, ", "));
     }
-
-    public void setFrom(Relation from) {
-        this.from = from;
-    }
-
-    public Predicate getCondition() {
-        return condition;
-    }
-
-    public void setCondition(Predicate condition) {
-        this.condition = condition;
-    }
-
-    public List<GroupingElement> getGroupBy() {
-        return groupBy;
-    }
-
-    public void setGroupBy(List<GroupingElement> groupBy) {
-        this.groupBy = groupBy;
-    }
-
-    public String getAlias() {
-        return alias;
-    }
-
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
-
 }
