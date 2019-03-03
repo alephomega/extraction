@@ -1,6 +1,5 @@
 package com.kakaopage.crm.extraction.ra;
 
-import com.kakaopage.crm.extraction.Function;
 import com.kakaopage.crm.extraction.Symbol;
 import com.kakaopage.crm.extraction.functions.Alias;
 
@@ -9,20 +8,20 @@ import java.util.stream.Collectors;
 
 @Symbol("γ")
 public class Grouping extends UnaryRelationalAlgebraOperator {
-    private final List<Function> groupBy;
-    private final List<Function> aggregations;
+    private final List<GroupingElement> groupBy;
+    private final List<Aggregation> aggregations;
 
     public Grouping(List<Alias> groupBy, List<Alias> aggregations, Relation relation) {
         super(relation);
-        this.groupBy = groupBy.stream().collect(Collectors.toList());
-        this.aggregations = aggregations.stream().collect(Collectors.toList());
+        this.groupBy = groupBy.stream().map(a -> new GroupingElement(a.getFunction(), a.getName())).collect(Collectors.toList());
+        this.aggregations = aggregations.stream().map(a -> new Aggregation(a.getFunction(), a.getName())).collect(Collectors.toList());
     }
 
-    public List<Function> getGroupBy() {
+    public List<GroupingElement> getGroupBy() {
         return groupBy;
     }
 
-    public List<Function> getAggregations() {
+    public List<Aggregation> getAggregations() {
         return aggregations;
     }
 }

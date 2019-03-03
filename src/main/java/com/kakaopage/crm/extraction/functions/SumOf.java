@@ -5,14 +5,8 @@ import com.kakaopage.crm.extraction.Function;
 
 @FuncIdentifier("sumOf")
 public class SumOf extends ArrayFunction {
-    private final Class type;
 
-    public SumOf(Function array, Class type) {
+    public SumOf(Function array) {
         super(array);
-        this.type = type;
-    }
-
-    public Class getType() {
-        return type;
     }
 }

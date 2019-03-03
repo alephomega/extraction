@@ -1,11 +1,12 @@
 package com.kakaopage.crm.extraction.ra;
 
+import com.kakaopage.crm.extraction.Predicate;
 import com.kakaopage.crm.extraction.Symbol;
 
 @Symbol("⟗")
-class FullOuterJoin extends BinaryRelationalAlgebraOperator {
+public class FullOuterJoin extends Join {
 
-    public FullOuterJoin(Relation first, Relation second) {
-        super(first, second);
+    public FullOuterJoin(Predicate condition, Relation first, Relation second) {
+        super(condition, first, second);
     }
 }

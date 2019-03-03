@@ -12,4 +12,12 @@ public class Aggregation implements Description {
         this.function = function;
         this.alias = alias;
     }
+
+    public Function getFunction() {
+        return function;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
 }

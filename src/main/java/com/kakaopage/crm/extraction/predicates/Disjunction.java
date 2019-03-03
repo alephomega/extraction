@@ -8,7 +8,7 @@ import java.util.List;
 
 @Symbol("∨")
 public class Disjunction extends UnaryOperator<List<Predicate>> implements LogicalOperator {
-    Disjunction(List<Predicate> predicates) {
+    public Disjunction(List<Predicate> predicates) {
         super(predicates);
     }
 

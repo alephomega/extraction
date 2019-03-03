@@ -9,7 +9,7 @@ import java.util.List;
 @Symbol("∈")
 public class In<T> extends ComparativeOperator {
 
-    In(Function value, Constant<List<T>> elements) {
+    public In(Function value, Constant<List<T>> elements) {
         super(value, elements);
     }
 

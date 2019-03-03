@@ -2,11 +2,11 @@ package com.kakaopage.crm.extraction;
 
 import com.kakaopage.crm.extraction.ra.Relation;
 
-class Sink implements Step {
+public class Sink implements Step {
     private final String name;
     private final Relation relation;
 
-    Sink(String name, Relation relation) {
+    public Sink(String name, Relation relation) {
         this.name = name;
         this.relation = relation;
     }

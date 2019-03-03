@@ -12,7 +12,7 @@ public class GroupingDecorator implements StatementDecorator<SelectStatement, Gr
         Select select = statement.getSelect();
         select.removeAll();
 
-        Stream.concat(grouping.getGroupBy().stream(), grouping.getAggregations().stream())
+        Stream.concat(grouping.getGroupBy().stream().map(g -> new Alias(g.getBy(), g.getAlias())), grouping.getAggregations().stream().map(a -> new Alias(a.getFunction(), a.getAlias())))
                 .forEach(function -> {
                     Alias alias = (Alias) function;
                     select.add(alias.getFunction(), alias.getName());

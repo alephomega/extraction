@@ -1,5 +1,7 @@
 package com.kakaopage.crm.extraction;
 
-public interface Description {
+import java.io.Serializable;
+
+public interface Description extends Serializable {
 
 }

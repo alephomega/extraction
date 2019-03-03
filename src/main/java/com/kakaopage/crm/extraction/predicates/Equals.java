@@ -4,9 +4,9 @@ import com.kakaopage.crm.extraction.Function;
 import com.kakaopage.crm.extraction.Symbol;
 
 @Symbol("=")
-public class Equal extends ComparativeOperator {
+public class Equals extends ComparativeOperator {
 
-    public Equal(Function f1, Function f2) {
+    public Equals(Function f1, Function f2) {
         super(f1, f2);
     }
 }

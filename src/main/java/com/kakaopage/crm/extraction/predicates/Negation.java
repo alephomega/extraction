@@ -5,8 +5,8 @@ import com.kakaopage.crm.extraction.Predicate;
 import com.kakaopage.crm.extraction.UnaryOperator;
 
 @Symbol("¬")
-class Negation extends UnaryOperator<Predicate> implements LogicalOperator {
-    Negation(Predicate predicate) {
+public class Negation extends UnaryOperator<Predicate> implements LogicalOperator {
+    public Negation(Predicate predicate) {
         super(predicate);
     }
 

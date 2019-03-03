@@ -9,7 +9,7 @@ public class RenamingDecorator implements StatementDecorator<SelectStatement, Re
 
     @Override
     public SelectStatement build(SelectStatement statement, Renaming renaming) {
-        List<Pair<String, String>> pairs = renaming.getRenamings();
+        List<Pair<String, String>> pairs = renaming.getChanges();
 
         Select select = statement.getSelect();
         for (Pair<String, String> pair : pairs) {

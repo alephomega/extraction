@@ -12,11 +12,11 @@ public class BinaryRelationalAlgebraOperator implements RelationalAlgebraOperato
         this._2 = _2;
     }
 
-    public Relation getFirstRelation() {
+    public Relation firstRelation() {
         return _1;
     }
 
-    public Relation getSecondRelation() {
+    public Relation secondRelation() {
         return _2;
     }
 
