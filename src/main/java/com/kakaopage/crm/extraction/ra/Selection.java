@@ -7,7 +7,7 @@ import com.kakaopage.crm.extraction.Predicate;
 public class Selection extends UnaryRelationalAlgebraOperator {
     private final Predicate condition;
 
-    Selection(Predicate condition, Relation relation) {
+    public Selection(Predicate condition, Relation relation) {
         super(relation);
         this.condition = condition;
     }

@@ -4,7 +4,7 @@ public class Relation {
     private final String name;
     private final Schema schema;
 
-    Relation(String name, Schema schema) {
+    public Relation(String name, Schema schema) {
         this.name = name;
         this.schema = schema;
     }

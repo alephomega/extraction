@@ -9,7 +9,7 @@ import java.util.List;
 public class Renaming extends UnaryRelationalAlgebraOperator {
     private final List<Pair<String, String>> changes;
 
-    Renaming(List<Pair<String, String>> changes, Relation relation) {
+    public Renaming(List<Pair<String, String>> changes, Relation relation) {
         super(relation);
         this.changes = changes;
     }
