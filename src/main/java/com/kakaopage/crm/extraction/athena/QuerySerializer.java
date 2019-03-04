@@ -6,7 +6,7 @@ import com.kakaopage.crm.extraction.functions.Constant;
 import com.kakaopage.crm.extraction.functions.Value;
 import com.kakaopage.crm.extraction.predicates.Conjunction;
 import com.kakaopage.crm.extraction.predicates.Equals;
-import com.kakaopage.crm.extraction.predicates.In;
+import com.kakaopage.crm.extraction.predicates.IsIn;
 import com.kakaopage.crm.extraction.ra.Relation;
 import org.apache.commons.lang3.StringUtils;
 
@@ -55,8 +55,8 @@ public class QuerySerializer {
             return String.format("%s = %s", serialize(equals.firstOperand(), context), serialize(equals.secondOperand(), context));
         }
 
-        if (condition instanceof In) {
-            In in = (In) condition;
+        if (condition instanceof IsIn) {
+            IsIn in = (IsIn) condition;
             List elements = in.getElements();
             return String.format("%s in [%s]", serialize(in.getValue(), context), StringUtils.join(elements.stream().map(element -> serialize(element, context)).toArray(), ", "));
         }
