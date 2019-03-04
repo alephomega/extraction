@@ -1,6 +1,6 @@
 package com.kakaopage.crm.extraction.ra;
 
-enum OrderBy {
+public enum OrderBy {
     ASC,
     DESC
 }
