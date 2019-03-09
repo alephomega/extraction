@@ -5,16 +5,16 @@ import com.kakaopage.crm.extraction.Function;
 
 @FuncIdentifier("val")
 public class Value implements Function {
-    private final String dataset;
+    private final String dataSet;
     private final String attribute;
 
-    public Value(String dataset, String attribute) {
-        this.dataset = dataset;
+    public Value(String dataSet, String attribute) {
+        this.dataSet = dataSet;
         this.attribute = attribute;
     }
 
-    public String getDataset() {
-        return dataset;
+    public String getDataSet() {
+        return dataSet;
     }
 
     public String getAttribute() {
