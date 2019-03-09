@@ -1,6 +1,7 @@
 package com.kakaopage.crm.extraction;
 
 import com.google.gson.*;
+import com.kakaopage.crm.extraction.predicates.PredicatesPackage;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Type;
@@ -13,7 +14,7 @@ public class PredicateJsonDeserializer implements JsonDeserializer<Predicate> {
     private static final Map<String, Class<? extends Predicate>> predicateClasses = new HashMap<>();
 
     static {
-        Reflections reflections = new Reflections("com.kakaopage.crm.extraction.predicates");
+        Reflections reflections = new Reflections(PredicatesPackage.getName());
         Set<Class<? extends Predicate>> classes = reflections.getSubTypesOf(Predicate.class);
 
         for (Class<? extends Predicate> clss : classes) {

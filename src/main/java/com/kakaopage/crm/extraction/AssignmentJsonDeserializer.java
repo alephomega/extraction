@@ -2,6 +2,7 @@ package com.kakaopage.crm.extraction;
 
 
 import com.google.gson.*;
+import com.kakaopage.crm.extraction.ra.RelationalAlgebraOperatorsPackage;
 import com.kakaopage.crm.extraction.ra.RelationalAlgebraOperator;
 import org.reflections.Reflections;
 
@@ -15,7 +16,7 @@ public class AssignmentJsonDeserializer implements JsonDeserializer<Assignment> 
     private static final Map<String, Class<? extends RelationalAlgebraOperator>> operationClasses = new HashMap<>();
 
     static {
-        Reflections reflections = new Reflections("com.kakaopage.crm.extraction.ra");
+        Reflections reflections = new Reflections(RelationalAlgebraOperatorsPackage.getName());
         Set<Class<? extends RelationalAlgebraOperator>> classes = reflections.getSubTypesOf(RelationalAlgebraOperator.class);
 
         for (Class<? extends RelationalAlgebraOperator> clss : classes) {
