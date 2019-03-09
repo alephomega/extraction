@@ -1,9 +1,11 @@
 package com.kakaopage.crm.extraction.functions;
 
+import com.kakaopage.crm.extraction.FuncIdentifier;
 import com.kakaopage.crm.extraction.Function;
 
 import java.util.concurrent.TimeUnit;
 
+@FuncIdentifier("diff")
 public class DiffTime implements Function {
     private final Function _1;
     private final Function _2;

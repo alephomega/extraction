@@ -1,7 +1,9 @@
 package com.kakaopage.crm.extraction.functions;
 
+import com.kakaopage.crm.extraction.FuncIdentifier;
 import com.kakaopage.crm.extraction.Function;
 
+@FuncIdentifier("format")
 public class TimeFormat implements Function {
     private final Function time;
     private final String pattern;
