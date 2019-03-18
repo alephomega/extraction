@@ -11,12 +11,18 @@ public class Extraction {
             .registerTypeAdapter(Assignment.class, new AssignmentJsonDeserializer())
             .create();
 
+    private final String id;
     private final List<Assignment> expressions;
     private final Sink sink;
 
-    public Extraction(List<Assignment> expressions, Sink sink) {
+    public Extraction(String id, List<Assignment> expressions, Sink sink) {
+        this.id = id;
         this.expressions = expressions;
         this.sink = sink;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public List<Assignment> getExpressions() {
