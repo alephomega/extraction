@@ -1,7 +1,5 @@
 package com.kakaopage.crm.extraction;
 
-import java.util.List;
-
 public abstract class JobExecutor {
     private PhaseListener phaseListener = new PhaseListener();
 
@@ -12,9 +10,9 @@ public abstract class JobExecutor {
         phaseListener.onStart(id);
 
         try {
-            List<Step> steps = Serializer.serialize(extraction);
+            Process process = Serializer.serialize(extraction);
 
-            JobResult result = run(id, steps);
+            ExtractionResult result = run(id, process);
             phaseListener.onSuccess(id, result);
 
         } catch (Exception e) {
@@ -22,5 +20,5 @@ public abstract class JobExecutor {
         }
     }
 
-    public abstract JobResult run(String id, List<Step> steps);
+    public abstract ExtractionResult run(String id, Process process);
 }

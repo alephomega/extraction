@@ -8,21 +8,20 @@ import java.util.*;
 
 public class Serializer {
 
-    public static List<Step> serialize(Extraction extraction) {
+    public static Process serialize(Extraction extraction) {
         ExpressionTree tree = new ExpressionTree(extraction);
 
         Sink sink = extraction.getSink();
         Relation relation = sink.getRelation();
 
         ExpressionTree.Node root = tree.sub(relation.getName());
-        List<Step> steps = serialize(root, extraction.getExpressions());
-        steps.add(sink);
+        List<Assignment> assignments = serialize(root, extraction.getExpressions());
 
-        return steps;
+        return new Process(assignments, sink);
     }
 
-    private static List<Step> serialize(ExpressionTree.Node root, List<Assignment> assignments) {
-        List<Step> steps = new ArrayList<>();
+    private static List<Assignment> serialize(ExpressionTree.Node root, List<Assignment> assignments) {
+        List<Assignment> steps = new ArrayList<>();
 
         if (!root.in.isEmpty()) {
             for (ExpressionTree.Node node : root.in) {

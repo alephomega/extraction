@@ -3,9 +3,9 @@ package com.kakaopage.crm.extraction;
 public class Partition {
     private final int id;
     private final String path;
-    private final int count;
+    private final long count;
 
-    public Partition(int id, String path, int count) {
+    public Partition(int id, String path, long count) {
         this.id = id;
         this.path = path;
         this.count = count;
@@ -15,7 +15,7 @@ public class Partition {
         return id;
     }
 
-    public int getCount() {
+    public long getCount() {
         return count;
     }
 
@@ -23,7 +23,7 @@ public class Partition {
         return path;
     }
 
-    public static Partition of(int id, String path, int count) {
+    public static Partition of(int id, String path, long count) {
         return new Partition(id, path, count);
     }
 }

@@ -27,7 +27,7 @@ class PhaseListener {
 
     }
 
-    void onSuccess(String id, JobResult result) {
+    void onSuccess(String id, ExtractionResult result) {
 
     }
 
