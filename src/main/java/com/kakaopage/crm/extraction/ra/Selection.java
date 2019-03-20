@@ -1,7 +1,7 @@
 package com.kakaopage.crm.extraction.ra;
 
-import com.kakaopage.crm.extraction.Symbol;
 import com.kakaopage.crm.extraction.Predicate;
+import com.kakaopage.crm.extraction.Symbol;
 
 @Symbol("σ")
 public class Selection extends UnaryRelationalAlgebraOperator {
@@ -14,13 +14,5 @@ public class Selection extends UnaryRelationalAlgebraOperator {
 
     public Predicate getCondition() {
         return condition;
-    }
-
-    public static class Parameters {
-        private final Predicate condition;
-
-        public Parameters(Predicate condition) {
-            this.condition = condition;
-        }
     }
 }

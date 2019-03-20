@@ -1,19 +1,21 @@
 package com.kakaopage.crm.extraction.ra;
 
+import com.kakaopage.crm.extraction.Predicate;
+
 public class Relation {
     private final String name;
-    private final Schema schema;
+    private final Predicate pushDown;
 
-    public Relation(String name, Schema schema) {
+    public Relation(String name, Predicate pushDown) {
         this.name = name;
-        this.schema = schema;
+        this.pushDown = pushDown;
     }
 
     public String getName() {
         return name;
     }
 
-    public Schema getSchema() {
-        return schema;
+    public Predicate getPushDown() {
+        return pushDown;
     }
 }

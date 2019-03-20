@@ -1,10 +1,15 @@
 package com.kakaopage.crm.extraction;
 
+public class Source {
+    private final String id;
+    private final long count;
+    private final String database;
+    private final String table;
 
-class Source {
-    private final String key;
-
-    public Source(String key) {
-        this.key = key;
+    public Source(String id, long count, String database, String table) {
+        this.id = id;
+        this.count = count;
+        this.database = database;
+        this.table = table;
     }
 }

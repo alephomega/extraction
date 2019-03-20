@@ -1,6 +1,7 @@
 package com.kakaopage.crm.extraction.predicates;
 
 import com.kakaopage.crm.extraction.Function;
+import com.kakaopage.crm.extraction.PushDown;
 import com.kakaopage.crm.extraction.Symbol;
 import com.kakaopage.crm.extraction.functions.Constant;
 
@@ -20,5 +21,13 @@ public class IsIn<T> extends ComparativeOperator {
     public List<T> getElements() {
         Constant<List<T>> _2 = (Constant<List<T>>) secondOperand();
         return _2.getValue();
+    }
+
+    @Override
+    public String toPushDownExpression() {
+        PushDown _1 = (PushDown) firstOperand();
+        PushDown _2 = (PushDown) secondOperand();
+
+        return String.format("%s in %s", _1.toPushDownExpression(), _2.toPushDownExpression());
     }
 }

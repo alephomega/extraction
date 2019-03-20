@@ -1,7 +1,6 @@
 package com.kakaopage.crm.extraction.athena;
 
 import com.kakaopage.crm.extraction.ra.Relation;
-import com.kakaopage.crm.extraction.ra.Schema;
 import com.kakaopage.crm.extraction.ra.Selection;
 
 import java.util.List;
@@ -23,8 +22,8 @@ public class SelectionDecorator implements StatementDecorator<SelectStatement, S
     }
 
     private List<SelectExpression> all(Relation relation) {
-        Schema schema = relation.getSchema();
-        List<Schema.Attribute> attributes = schema.getAttributes();
+//        Schema schema = relation.getSchema();
+//        List<Schema.Attribute> attributes = schema.getAttributes();
 
         return null;
     }
