@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class PredicateJsonDeserializer implements JsonDeserializer<Predicate> {
+class PredicateJsonDeserializer implements JsonDeserializer<Predicate> {
 
     private static final Map<String, Class<? extends Predicate>> predicateClasses = new HashMap<>();
 

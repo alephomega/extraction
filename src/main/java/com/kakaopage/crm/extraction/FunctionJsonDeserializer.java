@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class FunctionJsonDeserializer implements JsonDeserializer<Function> {
+class FunctionJsonDeserializer implements JsonDeserializer<Function> {
 
     private static final Map<String, Class<? extends Function>> functionClasses = new HashMap<>();
 
