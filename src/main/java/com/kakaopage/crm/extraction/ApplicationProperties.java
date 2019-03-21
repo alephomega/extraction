@@ -16,6 +16,10 @@ public class ApplicationProperties {
         return properties;
     }
 
+    public static String get(String name) {
+        return get(name, null);
+    }
+
     public static String get(String name, String defaultValue) {
         return properties.getProperty(name, defaultValue);
     }
