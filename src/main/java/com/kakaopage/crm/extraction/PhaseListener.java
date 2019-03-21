@@ -1,15 +1,15 @@
 package com.kakaopage.crm.extraction;
 
 class PhaseListener {
-    void onStart(String id) {
+    void onStart(String job, String execution) {
 
     }
 
-    void onSuccess(String id, ExtractionResult result) {
+    void onSuccess(String job, String execution, ExtractionResult result) {
 
     }
 
-    void onFailure(String id, Exception e) {
+    void onFailure(String job, String execution, Exception e) {
 
     }
 }

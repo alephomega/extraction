@@ -3,34 +3,32 @@ package com.kakaopage.crm.extraction;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.List;
-
 public class Extraction {
     private final static Gson GSON =  new GsonBuilder().registerTypeAdapter(Function.class, new FunctionJsonDeserializer())
             .registerTypeAdapter(Predicate.class, new PredicateJsonDeserializer())
             .registerTypeAdapter(Assignment.class, new AssignmentJsonDeserializer())
             .create();
 
-    private final String id;
-    private final List<Assignment> expressions;
-    private final Sink sink;
+    private final String job;
+    private final String execution;
+    private final ProcessDescription description;
 
-    public Extraction(String id, List<Assignment> expressions, Sink sink) {
-        this.id = id;
-        this.expressions = expressions;
-        this.sink = sink;
+    public Extraction(String job, String execution, ProcessDescription description) {
+        this.job = job;
+        this.execution = execution;
+        this.description = description;
     }
 
-    public String getId() {
-        return id;
+    public String getJob() {
+        return job;
     }
 
-    public List<Assignment> getExpressions() {
-        return expressions;
+    public String getExecution() {
+        return execution;
     }
 
-    public Sink getSink() {
-        return sink;
+    public ProcessDescription getDescription() {
+        return description;
     }
 
     public static Extraction of(String description) {

@@ -1,5 +1,5 @@
 package com.kakaopage.crm.extraction;
 
-public interface Function extends Description {
+public interface Function extends Expression {
 
 }

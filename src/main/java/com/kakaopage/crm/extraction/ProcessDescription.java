@@ -2,13 +2,13 @@ package com.kakaopage.crm.extraction;
 
 import java.util.List;
 
-public class Process {
+public class ProcessDescription {
     private final String id;
     private final String time;
     private final List<Assignment> assignments;
     private final Sink sink;
 
-    public Process(String id, String time, List<Assignment> assignments, Sink sink) {
+    public ProcessDescription(String id, String time, List<Assignment> assignments, Sink sink) {
         this.id = id;
         this.time = time;
         this.assignments = assignments;

@@ -10,14 +10,15 @@ public class Serializer {
 
     public static Process serialize(Extraction extraction) {
         ExpressionTree tree = new ExpressionTree(extraction);
+        ProcessDescription processDescription = extraction.getDescription();
 
-        Sink sink = extraction.getSink();
+        Sink sink = processDescription.getSink();
         Relation relation = sink.getRelation();
 
         ExpressionTree.Node root = tree.sub(relation.getName());
-        List<Assignment> assignments = serialize(root, extraction.getExpressions());
+        List<Assignment> assignments = serialize(root, processDescription.getAssignments());
 
-        return new Process(assignments, sink);
+        return new Process(processDescription.getId(), processDescription.getTime(), assignments, sink);
     }
 
     private static List<Assignment> serialize(ExpressionTree.Node root, List<Assignment> assignments) {
@@ -51,7 +52,8 @@ public class Serializer {
         private Map<String, Node> map = new HashMap<>();
 
         ExpressionTree(Extraction extraction) {
-            List<Assignment> assignments = extraction.getExpressions();
+            ProcessDescription processDescription = extraction.getDescription();
+            List<Assignment> assignments = processDescription.getAssignments();
             for (Assignment assignment : assignments) {
                 add(assignment);
             }

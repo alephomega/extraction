@@ -3,23 +3,29 @@ package com.kakaopage.crm.extraction;
 import java.util.List;
 
 public class Cohort {
-    private final long total;
+    private final String name;
+    private final long size;
     private final List<Partition> partitions;
 
-    public Cohort(List<Partition> partitions) {
-        this.total = partitions.stream().mapToLong(Partition::getCount).sum();
+    public Cohort(String name, List<Partition> partitions) {
+        this.name = name;
+        this.size = partitions.stream().mapToLong(Partition::getCount).sum();
         this.partitions = partitions;
     }
 
-    public long getTotal() {
-        return total;
+    public String getName() {
+        return name;
+    }
+
+    public long getSize() {
+        return size;
     }
 
     public List<Partition> getPartitions() {
         return partitions;
     }
 
-    public static Cohort with(List<Partition> partitions) {
-        return new Cohort(partitions);
+    public static Cohort with(String name, List<Partition> partitions) {
+        return new Cohort(name, partitions);
     }
 }

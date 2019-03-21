@@ -1,9 +1,9 @@
 package com.kakaopage.crm.extraction.ra;
 
-import com.kakaopage.crm.extraction.Description;
+import com.kakaopage.crm.extraction.Expression;
 import com.kakaopage.crm.extraction.Function;
 
-public class Aggregation implements Description {
+public class Aggregation implements Expression {
     private final Function function;
     private final String alias;
 

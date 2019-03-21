@@ -6,19 +6,21 @@ public abstract class JobExecutor {
     public void run(String description) {
         Extraction extraction = Extraction.of(description);
 
-        String id = extraction.getId();
-        phaseListener.onStart(id);
+        String job = extraction.getJob();
+        String execution = extraction.getExecution();
+
+        phaseListener.onStart(job, execution);
 
         try {
             Process process = Serializer.serialize(extraction);
 
-            ExtractionResult result = run(id, process);
-            phaseListener.onSuccess(id, result);
+            ExtractionResult result = run(job, execution, process);
+            phaseListener.onSuccess(job, execution, result);
 
         } catch (Exception e) {
-            phaseListener.onFailure(id, e);
+            phaseListener.onFailure(job, execution, e);
         }
     }
 
-    public abstract ExtractionResult run(String id, Process process);
+    public abstract ExtractionResult run(String job, String execution, Process process);
 }

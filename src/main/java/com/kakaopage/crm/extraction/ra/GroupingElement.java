@@ -1,9 +1,9 @@
 package com.kakaopage.crm.extraction.ra;
 
-import com.kakaopage.crm.extraction.Description;
+import com.kakaopage.crm.extraction.Expression;
 import com.kakaopage.crm.extraction.Function;
 
-public class GroupingElement implements Description {
+public class GroupingElement implements Expression {
     private final Function by;
     private final String alias;
 
