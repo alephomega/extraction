@@ -1,20 +1,19 @@
 package com.kakaopage.crm.extraction;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class TargetDescription {
     private final String job;
     private final String execution;
-    private final long size;
-    private final String database;
-    private final String table;
-    private final String predicate;
+    private final String key;
+    private List<Split> splits;
 
-    public TargetDescription(String job, String execution, long size, String database, String table, String predicate) {
+    private TargetDescription(String job, String execution, String key, List<Split> splits) {
         this.job = job;
         this.execution = execution;
-        this.size = size;
-        this.database = database;
-        this.table = table;
-        this.predicate = predicate;
+        this.key = key;
+        this.splits = splits;
     }
 
     public String getJob() {
@@ -25,19 +24,18 @@ public class TargetDescription {
         return execution;
     }
 
-    public long getSize() {
-        return size;
+    public String getKey() {
+        return key;
     }
 
-    public String getDatabase() {
-        return database;
+    public List<Split> getSplits() {
+        return splits;
     }
 
-    public String getTable() {
-        return table;
-    }
+    public static TargetDescription with(String job, String execution, ExtractionResult result) {
+        Cohort cohort = result.getCohort();
+        List<Split> splits = cohort.getPartitions().stream().map(partition -> new Split(partition.getPath(), partition.getCount())).collect(Collectors.toList());
 
-    public String getPredicate() {
-        return predicate;
+        return new TargetDescription(job, execution, cohort.getName(), splits);
     }
 }
