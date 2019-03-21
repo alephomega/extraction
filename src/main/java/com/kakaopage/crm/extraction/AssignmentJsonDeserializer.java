@@ -2,8 +2,8 @@ package com.kakaopage.crm.extraction;
 
 
 import com.google.gson.*;
-import com.kakaopage.crm.extraction.ra.RelationalAlgebraOperatorsPackage;
 import com.kakaopage.crm.extraction.ra.RelationalAlgebraOperator;
+import com.kakaopage.crm.extraction.ra.RelationalAlgebraOperatorsPackage;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Type;
@@ -50,7 +50,7 @@ public class AssignmentJsonDeserializer implements JsonDeserializer<Assignment> 
         String symbol = operationJson.get("@Symbol").getAsString();
         Class<? extends Operator> clss = findClass(symbol);
         if (clss == null) {
-            throw new RuntimeException();
+            throw new InvalidExpressionException(String.format("No operator with symbol: %s was found", symbol));
         }
 
         RelationalAlgebraOperator operator = context.deserialize(operationJson, clss);
