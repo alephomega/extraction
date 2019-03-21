@@ -3,16 +3,16 @@ package com.kakaopage.crm.extraction;
 import java.util.List;
 
 public class Partitioning {
-    private final int numPartitions;
+    private final int partitions;
     private final List<Function> columns;
 
-    public Partitioning(int numPartitions, List<Function> columns) {
-        this.numPartitions = numPartitions;
+    public Partitioning(int partitions, List<Function> columns) {
+        this.partitions = partitions;
         this.columns = columns;
     }
 
-    public int getNumPartitions() {
-        return numPartitions;
+    public int getPartitions() {
+        return partitions;
     }
 
     public List<Function> getColumns() {
