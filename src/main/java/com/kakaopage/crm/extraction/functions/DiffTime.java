@@ -3,22 +3,20 @@ package com.kakaopage.crm.extraction.functions;
 import com.kakaopage.crm.extraction.FuncIdentifier;
 import com.kakaopage.crm.extraction.Function;
 
-import java.util.concurrent.TimeUnit;
-
 @FuncIdentifier("diff")
 public class DiffTime implements Function {
     private final Function _1;
     private final Function _2;
-    private final TimeUnit unit;
+    private final String unit;
 
-    public DiffTime(Function _1, Function _2, TimeUnit unit) {
+    public DiffTime(Function _1, Function _2, String unit) {
         this._1 = _1;
         this._2 = _2;
 
         this.unit = unit;
     }
 
-    public Function firsTime() {
+    public Function firstTime() {
         return _1;
     }
 
@@ -26,7 +24,7 @@ public class DiffTime implements Function {
         return _2;
     }
 
-    public TimeUnit getUnit() {
+    public String getUnit() {
         return unit;
     }
 }

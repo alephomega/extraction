@@ -5,7 +5,7 @@ import com.kakaopage.crm.extraction.Function;
 
 import java.util.List;
 
-@FuncIdentifier("arrayOf")
+@FuncIdentifier("array_of")
 public class ArrayOf implements Function {
     private final List<Function> elements;
 

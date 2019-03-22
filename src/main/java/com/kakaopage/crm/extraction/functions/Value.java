@@ -5,7 +5,7 @@ import com.kakaopage.crm.extraction.Function;
 import com.kakaopage.crm.extraction.PushDown;
 import org.apache.commons.lang3.StringUtils;
 
-@FuncIdentifier("val")
+@FuncIdentifier("value")
 public class Value implements Function, PushDown {
     private final String dataSet;
     private final String attribute;
