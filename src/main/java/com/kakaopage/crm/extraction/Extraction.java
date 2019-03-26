@@ -12,12 +12,12 @@ public class Extraction implements Expression {
 
     private final String job;
     private final String execution;
-    private final ProcessDescription description;
+    private final Process process;
 
-    public Extraction(String job, String execution, ProcessDescription description) {
+    public Extraction(String job, String execution, Process process) {
         this.job = job;
         this.execution = execution;
-        this.description = description;
+        this.process = process;
     }
 
     public String getJob() {
@@ -28,8 +28,8 @@ public class Extraction implements Expression {
         return execution;
     }
 
-    public ProcessDescription getDescription() {
-        return description;
+    public Process getProcess() {
+        return process;
     }
 
     public static Extraction of(String description) {
@@ -48,6 +48,6 @@ public class Extraction implements Expression {
             throw new InvalidExpressionException("execution field must not be empty");
         }
 
-        description.validate();
+        process.validate();
     }
 }

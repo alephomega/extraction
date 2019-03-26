@@ -1,9 +1,6 @@
 package com.kakaopage.crm.extraction;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.Map;
 
 public abstract class JobExecutor {
     private PhaseListener phaseListener = new PhaseListener();
@@ -13,13 +10,8 @@ public abstract class JobExecutor {
         try {
             extraction = Extraction.of(description);
         } catch (Exception e) {
-            Map<String, ?> descriptionMap = new Gson().fromJson(description, new TypeToken<Map<String, ?>>(){}.getType());
-            String job = (String) descriptionMap.get("job");
-            String execution = (String) descriptionMap.get("execution");
-
-            if (job != null && execution != null) {
-                phaseListener.onFailure(job, execution, e);
-            }
+            Key key = new Gson().fromJson(description, Key.class);
+            phaseListener.onFailure(key.job, key.execution, e);
 
             throw e;
         }
@@ -42,4 +34,14 @@ public abstract class JobExecutor {
     }
 
     public abstract ExtractionResult run(String job, String execution, Process process);
+
+    private static class Key {
+        private final String job;
+        private final String execution;
+
+        private Key(String job, String execution) {
+            this.job = job;
+            this.execution = execution;
+        }
+    }
 }
