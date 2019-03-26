@@ -10,7 +10,7 @@ public abstract class JobExecutor {
         try {
             extraction = Extraction.of(description);
         } catch (Exception e) {
-            Key key = new Gson().fromJson(description, Key.class);
+            ExecutionKey key = new Gson().fromJson(description, ExecutionKey.class);
             phaseListener.onFailure(key.job, key.execution, e);
 
             throw e;
@@ -35,11 +35,11 @@ public abstract class JobExecutor {
 
     public abstract ExtractionResult run(String job, String execution, Process process);
 
-    private static class Key {
+    private static class ExecutionKey {
         private final String job;
         private final String execution;
 
-        private Key(String job, String execution) {
+        private ExecutionKey(String job, String execution) {
             this.job = job;
             this.execution = execution;
         }
