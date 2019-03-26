@@ -1,5 +1,8 @@
 package com.kakaopage.crm.extraction.ra;
 
+import com.kakaopage.crm.extraction.Function;
+import com.kakaopage.crm.extraction.InvalidExpressionException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,5 +30,19 @@ public class BinaryRelationalAlgebraOperator implements RelationalAlgebraOperato
         operands.add(_2);
 
         return operands;
+    }
+
+    @Override
+    public void validate() throws InvalidExpressionException {
+        if (_1 == null) {
+            throw new InvalidExpressionException("_1 argument must not be null");
+        }
+
+        if (_2 == null) {
+            throw new InvalidExpressionException("_2 argument must not be null");
+        }
+
+        _1.validate();
+        _2.validate();
     }
 }

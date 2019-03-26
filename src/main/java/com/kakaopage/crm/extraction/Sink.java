@@ -1,8 +1,9 @@
 package com.kakaopage.crm.extraction;
 
 import com.kakaopage.crm.extraction.ra.Relation;
+import org.apache.commons.lang3.StringUtils;
 
-public class Sink implements Step {
+public class Sink implements Expression {
     private final String name;
     private final Partitioning partitioning;
     private final Relation relation;
@@ -23,5 +24,14 @@ public class Sink implements Step {
 
     public Partitioning getPartitioning() {
         return partitioning;
+    }
+
+    @Override
+    public void validate() throws InvalidExpressionException {
+        if (StringUtils.isEmpty(name)) {
+            throw new InvalidExpressionException("name field must not be empty");
+        }
+
+        relation.validate();
     }
 }

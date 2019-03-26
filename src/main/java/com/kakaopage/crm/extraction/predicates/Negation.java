@@ -1,5 +1,6 @@
 package com.kakaopage.crm.extraction.predicates;
 
+import com.kakaopage.crm.extraction.InvalidExpressionException;
 import com.kakaopage.crm.extraction.Predicate;
 import com.kakaopage.crm.extraction.Symbol;
 import com.kakaopage.crm.extraction.UnaryOperator;
@@ -17,5 +18,15 @@ public class Negation extends UnaryOperator<Predicate> implements LogicalOperato
     @Override
     public String toPushDownExpression() {
         return String.format("not (%s)", getPredicate().toPushDownExpression());
+    }
+
+    @Override
+    public void validate() throws InvalidExpressionException {
+        Predicate predicate = getPredicate();
+        if (predicate == null) {
+            throw new InvalidExpressionException("predicate must not be null");
+        }
+
+        predicate.validate();
     }
 }

@@ -1,14 +1,15 @@
 package com.kakaopage.crm.extraction.predicates;
 
 import com.kakaopage.crm.extraction.Function;
+import com.kakaopage.crm.extraction.InvalidExpressionException;
 import com.kakaopage.crm.extraction.PushDown;
 import com.kakaopage.crm.extraction.Symbol;
 
 @Symbol("=")
 public class Equals extends ComparativeOperator {
 
-    public Equals(Function f1, Function f2) {
-        super(f1, f2);
+    public Equals(Function _1, Function _2) {
+        super(_1, _2);
     }
 
     @Override

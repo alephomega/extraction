@@ -2,6 +2,8 @@ package com.kakaopage.crm.extraction.functions;
 
 import com.kakaopage.crm.extraction.FuncIdentifier;
 import com.kakaopage.crm.extraction.Function;
+import com.kakaopage.crm.extraction.InvalidExpressionException;
+import org.apache.commons.lang3.StringUtils;
 
 @FuncIdentifier("diff")
 public class DiffTime implements Function {
@@ -26,5 +28,39 @@ public class DiffTime implements Function {
 
     public String getUnit() {
         return unit;
+    }
+
+    @Override
+    public void validate() throws InvalidExpressionException {
+        if (_1 == null) {
+            throw new InvalidExpressionException("_1 argument must not be null");
+        }
+
+        if (_2 == null) {
+            throw new InvalidExpressionException("_2 argument must not be null");
+        }
+
+        _1.validate();
+        _2.validate();
+
+        validateUnit();
+    }
+
+    private void validateUnit() throws InvalidExpressionException {
+        if (StringUtils.isEmpty(unit)) {
+            throw new InvalidExpressionException("unit argument must not be empty");
+        }
+
+        switch (unit) {
+            case "days":
+            case "hours":
+            case "minutes":
+            case "seconds":
+            case "milliseconds":
+                break;
+
+            default:
+                throw new InvalidExpressionException("unit argument is invalid");
+        }
     }
 }

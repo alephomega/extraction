@@ -1,5 +1,7 @@
 package com.kakaopage.crm.extraction.ra;
 
+import com.kakaopage.crm.extraction.InvalidExpressionException;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -18,5 +20,14 @@ class UnaryRelationalAlgebraOperator implements RelationalAlgebraOperator {
     @Override
     public List<?> getOperands() {
         return Collections.singletonList(_1);
+    }
+
+    @Override
+    public void validate() throws InvalidExpressionException {
+        if (_1 == null) {
+            throw new InvalidExpressionException("_1 argument must not be null");
+        }
+
+        _1.validate();
     }
 }

@@ -41,7 +41,7 @@ class AssignmentJsonDeserializer implements JsonDeserializer<Assignment> {
     }
 
     @Override
-    public Assignment deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
+    public Assignment deserialize(JsonElement json, Type type, JsonDeserializationContext context) {
         JsonObject assignmentJson = json.getAsJsonObject();
 
         String variable = assignmentJson.get("variable").getAsString();

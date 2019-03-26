@@ -7,8 +7,8 @@ import com.kakaopage.crm.extraction.Symbol;
 @Symbol("<")
 public class LessThan extends ComparativeOperator {
 
-    public LessThan(Function f1, Function f2) {
-        super(f1, f2);
+    public LessThan(Function _1, Function _2) {
+        super(_1, _2);
     }
 
     @Override

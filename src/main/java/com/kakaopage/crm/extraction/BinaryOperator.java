@@ -3,7 +3,7 @@ package com.kakaopage.crm.extraction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BinaryOperator<F, S> implements Operator {
+public abstract class BinaryOperator<F, S> implements Operator {
     private final F _1;
     private final S _2;
 

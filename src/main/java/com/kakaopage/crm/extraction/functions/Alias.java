@@ -3,6 +3,8 @@ package com.kakaopage.crm.extraction.functions;
 
 import com.kakaopage.crm.extraction.FuncIdentifier;
 import com.kakaopage.crm.extraction.Function;
+import com.kakaopage.crm.extraction.InvalidExpressionException;
+import org.apache.commons.lang3.StringUtils;
 
 @FuncIdentifier("as")
 public class Alias implements Function {
@@ -20,5 +22,18 @@ public class Alias implements Function {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public void validate() throws InvalidExpressionException {
+        if (function == null) {
+            throw new InvalidExpressionException("function argument must not be null");
+        }
+
+        if (StringUtils.isEmpty(name)) {
+            throw new InvalidExpressionException("name argument must not be empty");
+        }
+
+        function.validate();
     }
 }

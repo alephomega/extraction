@@ -1,20 +1,19 @@
 package com.kakaopage.crm.extraction.functions;
 
-import com.kakaopage.crm.extraction.FuncIdentifier;
 import com.kakaopage.crm.extraction.Function;
 import com.kakaopage.crm.extraction.InvalidExpressionException;
+import com.kakaopage.crm.extraction.PushDown;
 
-@FuncIdentifier("contains")
-public class Contains<T> extends ArrayFunction {
-    private final T value;
+public class NotNull implements Function, PushDown {
+    private final Value value;
 
-    public Contains(Function array, T value) {
-        super(array);
+    public NotNull(Value value) {
         this.value = value;
     }
 
-    public T getValue() {
-        return value;
+    @Override
+    public String toPushDownExpression() {
+        return String.format("%s is not null", value.toPushDownExpression());
     }
 
     @Override
@@ -22,5 +21,7 @@ public class Contains<T> extends ArrayFunction {
         if (value == null) {
             throw new InvalidExpressionException("value argument must not be null");
         }
+
+        value.validate();
     }
 }

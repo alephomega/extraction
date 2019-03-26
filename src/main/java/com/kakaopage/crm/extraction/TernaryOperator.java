@@ -3,7 +3,7 @@ package com.kakaopage.crm.extraction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TernaryOperator<F, S, T> implements Operator {
+public abstract class TernaryOperator<F, S, T> implements Operator {
     private final F _1;
     private final S _2;
     private final T _3;

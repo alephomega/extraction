@@ -2,6 +2,8 @@ package com.kakaopage.crm.extraction.functions;
 
 import com.kakaopage.crm.extraction.FuncIdentifier;
 import com.kakaopage.crm.extraction.Function;
+import com.kakaopage.crm.extraction.InvalidExpressionException;
+import org.apache.commons.lang3.StringUtils;
 
 @FuncIdentifier("format")
 public class TimeFormat implements Function {
@@ -28,4 +30,20 @@ public class TimeFormat implements Function {
     }
 
 
+    @Override
+    public void validate() throws InvalidExpressionException {
+        if (time == null) {
+            throw new InvalidExpressionException("time argument must not be null");
+        }
+
+        time.validate();
+
+        if (StringUtils.isEmpty(pattern)) {
+            throw new InvalidExpressionException("pattern argument must not be empty");
+        }
+
+        if (StringUtils.isEmpty(timezone)) {
+            throw new InvalidExpressionException("timezone argument must not be empty");
+        }
+    }
 }

@@ -2,6 +2,7 @@ package com.kakaopage.crm.extraction.functions;
 
 import com.kakaopage.crm.extraction.FuncIdentifier;
 import com.kakaopage.crm.extraction.Function;
+import com.kakaopage.crm.extraction.InvalidExpressionException;
 import com.kakaopage.crm.extraction.PushDown;
 import org.apache.commons.lang3.StringUtils;
 
@@ -54,5 +55,12 @@ public class Constant<T> implements Function, PushDown {
         }
 
         return String.format("%s", String.valueOf(obj));
+    }
+
+    @Override
+    public void validate() throws InvalidExpressionException {
+        if (value == null) {
+            throw new InvalidExpressionException("value argument must not be null");
+        }
     }
 }

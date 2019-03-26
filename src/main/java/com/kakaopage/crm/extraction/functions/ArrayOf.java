@@ -1,7 +1,9 @@
 package com.kakaopage.crm.extraction.functions;
 
+import com.kakaopage.crm.extraction.Expression;
 import com.kakaopage.crm.extraction.FuncIdentifier;
 import com.kakaopage.crm.extraction.Function;
+import com.kakaopage.crm.extraction.InvalidExpressionException;
 
 import java.util.List;
 
@@ -15,5 +17,14 @@ public class ArrayOf implements Function {
 
     public List<Function> getElements() {
         return elements;
+    }
+
+    @Override
+    public void validate() throws InvalidExpressionException {
+        if (elements == null) {
+            throw new InvalidExpressionException("elements argument must not be null");
+        }
+
+        elements.forEach(Expression::validate);
     }
 }

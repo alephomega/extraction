@@ -2,6 +2,7 @@ package com.kakaopage.crm.extraction.functions;
 
 import com.kakaopage.crm.extraction.FuncIdentifier;
 import com.kakaopage.crm.extraction.Function;
+import com.kakaopage.crm.extraction.InvalidExpressionException;
 import com.kakaopage.crm.extraction.PushDown;
 import org.apache.commons.lang3.StringUtils;
 
@@ -30,5 +31,12 @@ public class Value implements Function, PushDown {
         }
 
         return String.format("%s.%s", dataSet, attribute);
+    }
+
+    @Override
+    public void validate() throws InvalidExpressionException {
+        if (StringUtils.isEmpty(attribute)) {
+            throw new InvalidExpressionException("attribute argument must not be empty");
+        }
     }
 }

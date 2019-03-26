@@ -39,10 +39,13 @@ class PredicateJsonDeserializer implements JsonDeserializer<Predicate> {
     }
 
     @Override
-    public Predicate deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
+    public Predicate deserialize(JsonElement json, Type type, JsonDeserializationContext context) {
         JsonObject predicateJson = json.getAsJsonObject();
         String symbol = predicateJson.get("@Symbol").getAsString();
         Class<? extends Predicate> clss = findClass(symbol);
+        if (clss == null) {
+            throw new InvalidExpressionException(String.format("No predicate with symbol: %s was found", symbol));
+        }
 
         return context.deserialize(predicateJson, clss);
     }

@@ -3,7 +3,7 @@ package com.kakaopage.crm.extraction;
 import java.util.Collections;
 import java.util.List;
 
-public class UnaryOperator<T> implements Operator {
+public abstract class UnaryOperator<T> implements Operator {
     private final T _1;
 
     public UnaryOperator(T _1) {

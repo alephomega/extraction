@@ -39,11 +39,15 @@ class FunctionJsonDeserializer implements JsonDeserializer<Function> {
     }
 
     @Override
-    public Function deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
+    public Function deserialize(JsonElement json, Type type, JsonDeserializationContext context) {
         JsonObject functionJson = json.getAsJsonObject();
         String identifier = functionJson.get("@FuncIdentifier").getAsString();
 
         Class<? extends Function> clss = findClass(identifier);
+        if (clss == null) {
+            throw new InvalidExpressionException(String.format("No function with identifier: %s was found", identifier));
+        }
+
         return context.deserialize(functionJson, clss);
     }
 }
