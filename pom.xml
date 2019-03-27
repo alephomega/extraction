@@ -6,7 +6,7 @@
 
     <groupId>com.kakaopage.crm</groupId>
     <artifactId>extraction</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
 
     <build>
         <plugins>
