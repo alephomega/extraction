@@ -23,8 +23,8 @@ class API {
         restTemplate = new RestTemplate(requestFactory);
     }
 
-    static void job(String id) {
-
+    static Job job(String id) {
+        return null;
     }
 
     static void jobStarted(String job, String execution) {

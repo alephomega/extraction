@@ -18,7 +18,7 @@ public class Serializer {
         ExpressionTree.Node root = tree.sub(relation.getName());
         List<Assignment> assignments = serialize(root, process.getAssignments());
 
-        return new Process(process.getId(), process.getTime(), assignments, sink);
+        return new Process(process.getName(), process.isRepeated(), assignments, sink);
     }
 
     private static List<Assignment> serialize(ExpressionTree.Node root, List<Assignment> assignments) {

@@ -5,24 +5,24 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.List;
 
 public class Process implements Expression {
-    private final String id;
-    private final String time;
+    private final String name;
+    private final boolean repeated;
     private final List<Assignment> assignments;
     private final Sink sink;
 
-    public Process(String id, String time, List<Assignment> assignments, Sink sink) {
-        this.id = id;
-        this.time = time;
+    public Process(String name, boolean repeated, List<Assignment> assignments, Sink sink) {
+        this.name = name;
+        this.repeated = repeated;
         this.assignments = assignments;
         this.sink = sink;
     }
 
-    public String getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public String getTime() {
-        return time;
+    public boolean isRepeated() {
+        return repeated;
     }
 
     public List<Assignment> getAssignments() {
@@ -35,12 +35,8 @@ public class Process implements Expression {
 
     @Override
     public void validate() throws InvalidExpressionException {
-        if (StringUtils.isEmpty(id)) {
+        if (StringUtils.isEmpty(name)) {
             throw new InvalidExpressionException("id field must not be empty");
-        }
-
-        if (StringUtils.isEmpty(time)) {
-            throw new InvalidExpressionException("time field must not be empty");
         }
 
         if (assignments == null || assignments.isEmpty()) {

@@ -11,6 +11,10 @@ public class NotNull implements Function, PushDown {
         this.value = value;
     }
 
+    public Value getValue() {
+        return value;
+    }
+
     @Override
     public String toPushDownExpression() {
         return String.format("%s is not null", value.toPushDownExpression());

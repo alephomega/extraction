@@ -6,42 +6,34 @@ public abstract class JobExecutor {
     private PhaseListener phaseListener = new PhaseListener();
 
     public void run(String description) {
+        Execution execution = new Gson().fromJson(description, Execution.class);
+        String id = execution.getId();
+        String job = execution.getJob();
+
+        Job metadata = API.job(job);
+        String expression = metadata.getExpression();
+
         Extraction extraction;
         try {
-            extraction = Extraction.of(description);
+            extraction = Extraction.of(id, job, expression);
         } catch (Exception e) {
-            ExecutionKey key = new Gson().fromJson(description, ExecutionKey.class);
-            phaseListener.onFailure(key.job, key.execution, e);
-
+            phaseListener.onFailure(job, id, e);
             throw e;
         }
 
-        String job = extraction.getJob();
-        String execution = extraction.getExecution();
-
-        phaseListener.onStart(job, execution);
+        phaseListener.onStart(job, id);
 
         try {
             Process process = Serializer.serialize(extraction);
 
-            ExtractionResult result = run(job, execution, process);
-            phaseListener.onSuccess(job, execution, result);
+            ExtractionResult result = run(job, id, process);
+            phaseListener.onSuccess(job, id, result);
 
         } catch (Exception e) {
-            phaseListener.onFailure(job, execution, e);
+            phaseListener.onFailure(job, id, e);
             throw e;
         }
     }
 
-    public abstract ExtractionResult run(String job, String execution, Process process);
-
-    private static class ExecutionKey {
-        private final String job;
-        private final String execution;
-
-        private ExecutionKey(String job, String execution) {
-            this.job = job;
-            this.execution = execution;
-        }
-    }
+    public abstract ExtractionResult run(String id, String job, Process process);
 }
