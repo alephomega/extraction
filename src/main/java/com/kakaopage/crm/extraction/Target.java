@@ -7,14 +7,14 @@ public class Target {
     private final String job;
     private final String execution;
     private final String key;
-    private final boolean repeated;
+    private final int interval;
     private List<Split> splits;
 
-    private Target(String job, String execution, String key, boolean repeated, List<Split> splits) {
+    private Target(String job, String execution, String key, int interval, List<Split> splits) {
         this.job = job;
         this.execution = execution;
         this.key = key;
-        this.repeated = repeated;
+        this.interval = interval;
         this.splits = splits;
     }
 
@@ -30,8 +30,8 @@ public class Target {
         return key;
     }
 
-    public boolean isRepeated() {
-        return repeated;
+    public int getInterval() {
+        return interval;
     }
 
     public List<Split> getSplits() {
@@ -41,6 +41,6 @@ public class Target {
     public static Target with(String job, String execution, Cohort cohort) {
         List<Split> splits = cohort.getPartitions().stream().map(partition -> new Split(partition.getPath(), partition.getCount())).collect(Collectors.toList());
 
-        return new Target(job, execution, cohort.getName(), cohort.isRepeated(), splits);
+        return new Target(job, execution, cohort.getName(), cohort.getInterval(), splits);
     }
 }

@@ -1,11 +1,20 @@
 package com.kakaopage.crm.extraction;
 
 import com.google.gson.Gson;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 
+import java.text.ParseException;
 import java.util.Map;
+import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public abstract class JobExecutor {
+    private static final TimeZone TIMEZONE = TimeZone.getTimeZone(ApplicationProperties.get("service.timezone"));
+    private static final FastDateFormat TIME_FORMAT = FastDateFormat.getInstance(ApplicationProperties.get("service.time-pattern"));
+
     private PhaseListener phaseListener = new PhaseListener();
 
     public void run(String description, Map<String, String> params) {
@@ -39,10 +48,58 @@ public abstract class JobExecutor {
     }
 
     private String replace(String description, Map<String, String> params) {
-        String rs = description;
+        String at = params.get("at");
+        String rs = applyRandomString(applyTimestamp(at, description));
+
         for (Map.Entry<String, String> entry : params.entrySet()) {
             String key = entry.getKey();
-            rs = StringUtils.replace(description, String.format("${%s}", key), entry.getValue());
+            rs = StringUtils.replace(rs, String.format("${%s}", key), entry.getValue());
+        }
+
+        return rs;
+    }
+
+    private String applyTimestamp(String at, String description) {
+        String rs = description;
+        Matcher matcher = Pattern.compile("\\$\\{timestamp:\\s*([^}]+)\\}").matcher(rs);
+
+        boolean result = matcher.find();
+        if (result) {
+            StringBuffer sb = new StringBuffer();
+            do {
+                String replacement;
+                try {
+                    replacement = FastDateFormat.getInstance(matcher.group(1), TIMEZONE).format(TIME_FORMAT.parse(at));
+                } catch (ParseException e) {
+                    // Should not happen
+                    replacement = matcher.group(1);
+                }
+
+                matcher.appendReplacement(sb, replacement);
+                result = matcher.find();
+            } while (result);
+
+            matcher.appendTail(sb);
+            rs = sb.toString();
+        }
+
+        return rs;
+    }
+
+    private String applyRandomString(String description) {
+        String rs = description;
+        Matcher matcher = Pattern.compile("\\$\\{random-string:\\s*(\\d+)\\}").matcher(description);
+
+        boolean result = matcher.find();
+        if (result) {
+            StringBuffer sb = new StringBuffer();
+            do {
+                matcher.appendReplacement(sb, RandomStringUtils.randomAlphanumeric(Integer.parseInt(matcher.group(1))));
+                result = matcher.find();
+            } while (result);
+
+            matcher.appendTail(sb);
+            rs = sb.toString();
         }
 
         return rs;

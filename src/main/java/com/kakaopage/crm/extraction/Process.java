@@ -6,13 +6,13 @@ import java.util.List;
 
 public class Process implements Expression {
     private final String name;
-    private final boolean repeated;
+    private final int interval;
     private final List<Assignment> assignments;
     private final Sink sink;
 
-    public Process(String name, boolean repeated, List<Assignment> assignments, Sink sink) {
+    public Process(String name, int interval, List<Assignment> assignments, Sink sink) {
         this.name = name;
-        this.repeated = repeated;
+        this.interval = interval;
         this.assignments = assignments;
         this.sink = sink;
     }
@@ -21,8 +21,8 @@ public class Process implements Expression {
         return name;
     }
 
-    public boolean isRepeated() {
-        return repeated;
+    public int getInterval() {
+        return interval;
     }
 
     public List<Assignment> getAssignments() {
