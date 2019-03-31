@@ -38,8 +38,7 @@ public class Target {
         return splits;
     }
 
-    public static Target with(String job, String execution, ExtractionResult result) {
-        Cohort cohort = result.getCohort();
+    public static Target with(String job, String execution, Cohort cohort) {
         List<Split> splits = cohort.getPartitions().stream().map(partition -> new Split(partition.getPath(), partition.getCount())).collect(Collectors.toList());
 
         return new Target(job, execution, cohort.getName(), cohort.isRepeated(), splits);

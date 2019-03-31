@@ -24,8 +24,46 @@ class API {
     }
 
     static Job job(String id) {
-        return null;
+        String url = String.format("%s/job/%s", ApplicationProperties.get("api.metadata.base-url"), id);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cache-Control", "no-cache");
+        headers.add("Content-Type", "application/json");
+
+        HttpEntity entity = new HttpEntity(headers);
+
+        ResponseEntity<Response> result = null;
+        int retries = Integer.parseInt(ApplicationProperties.get("api.metadata.retries", "2"));
+        for (int i = retries; i >= 0; i--) {
+            try {
+                result = restTemplate.exchange(url, HttpMethod.GET, entity, Response.class);
+                break;
+            } catch (Exception e) {
+                if (i == 0) {
+                    throw new APICallFailedException(e);
+                }
+
+                try {
+                    Thread.sleep(1000 * (retries-i+1));
+                } catch (InterruptedException ignored) { }
+            }
+        }
+
+        if (result == null) {
+            throw new APICallFailedException("Should not happen");
+        }
+
+        if (!result.getStatusCode().is2xxSuccessful()) {
+            throw new APICallFailedException(result.getBody().getMessage());
+        }
+
+        Map<String, ?> response = result.getBody().getResponse();
+        String name = (String) response.get("jobName");
+        String expression = (String) response.get("relationExp");
+
+        return new Job(id, name, expression);
     }
+
 
     static void jobStarted(String job, String execution) {
         jobExecutionStatus(job, execution, "running", null);

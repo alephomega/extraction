@@ -29,8 +29,8 @@ public abstract class JobExecutor {
         try {
             Process process = Serializer.serialize(extraction);
 
-            ExtractionResult result = run(job, id, process);
-            phaseListener.onSuccess(job, id, result);
+            Cohort cohort = run(job, id, process);
+            phaseListener.onSuccess(job, id, cohort);
 
         } catch (Exception e) {
             phaseListener.onFailure(job, id, e);
@@ -49,5 +49,5 @@ public abstract class JobExecutor {
     }
 
 
-    public abstract ExtractionResult run(String id, String job, Process process);
+    public abstract Cohort run(String id, String job, Process process);
 }

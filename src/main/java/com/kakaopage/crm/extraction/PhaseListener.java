@@ -13,8 +13,8 @@ class PhaseListener {
         }
     }
 
-    void onSuccess(String id, String job, ExtractionResult result) {
-        String description = GSON.toJson(Target.with(job, id, result));
+    void onSuccess(String id, String job, Cohort cohort) {
+        String description = GSON.toJson(Target.with(job, id, cohort));
         try {
             API.jobCompleted(job, id, description);
         } catch (Exception e) {
