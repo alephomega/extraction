@@ -1,9 +1,11 @@
 package com.kakaopage.crm.extraction.functions;
 
+import com.kakaopage.crm.extraction.FuncIdentifier;
 import com.kakaopage.crm.extraction.Function;
 import com.kakaopage.crm.extraction.InvalidExpressionException;
 import com.kakaopage.crm.extraction.PushDown;
 
+@FuncIdentifier("is_not_null")
 public class NotNull implements Function, PushDown {
     private final Value value;
 
