@@ -1,12 +1,21 @@
 package com.kakaopage.crm.extraction;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Target {
+
+    @SerializedName("job_id")
     private final String job;
+
+    @SerializedName("job_execution_id")
     private final String execution;
+
+    @SerializedName("partition")
     private final String key;
+
     private final int interval;
     private List<Split> splits;
 

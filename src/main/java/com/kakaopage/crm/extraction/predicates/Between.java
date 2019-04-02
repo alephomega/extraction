@@ -2,6 +2,7 @@ package com.kakaopage.crm.extraction.predicates;
 
 import com.kakaopage.crm.extraction.*;
 
+@Symbol("≥≤")
 public class Between extends TernaryOperator<Function, Function, Function> implements Predicate {
 
     public Between(Function _1, Function _2, Function _3) {
@@ -33,7 +34,6 @@ public class Between extends TernaryOperator<Function, Function, Function> imple
         if (_3 == null) {
             throw new InvalidExpressionException("_3 argument must not be null");
         }
-
 
         _1.validate();
         _2.validate();

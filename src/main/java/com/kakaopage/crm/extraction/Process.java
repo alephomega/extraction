@@ -1,5 +1,6 @@
 package com.kakaopage.crm.extraction;
 
+import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -7,7 +8,10 @@ import java.util.List;
 public class Process implements Expression {
     private final String name;
     private final int interval;
+
+    @SerializedName("expressions")
     private final List<Assignment> assignments;
+
     private final Sink sink;
 
     public Process(String name, int interval, List<Assignment> assignments, Sink sink) {

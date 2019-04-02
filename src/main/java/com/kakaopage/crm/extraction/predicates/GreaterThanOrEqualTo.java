@@ -19,20 +19,4 @@ public class GreaterThanOrEqualTo extends ComparativeOperator {
 
         return String.format("%s >= %s", _1.toPushDownExpression(), _2.toPushDownExpression());
     }
-
-    @Override
-    public void validate() throws InvalidExpressionException {
-        Function _1 = firstOperand();
-        if (_1 == null) {
-            throw new InvalidExpressionException("_1 argument must not be null");
-        }
-
-        Function _2 = secondOperand();
-        if (_2 == null) {
-            throw new InvalidExpressionException("_2 argument must not be null");
-        }
-
-        _1.validate();
-        _2.validate();
-    }
 }

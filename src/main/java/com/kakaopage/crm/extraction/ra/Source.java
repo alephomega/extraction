@@ -35,7 +35,8 @@ public class Source extends Relation {
 
     public enum Type {
         System,
-        User;
+        User,
+        Intermediate;
 
         @Override
         public String toString() {
