@@ -17,7 +17,7 @@ public class Negation extends UnaryOperator<Predicate> implements LogicalOperato
 
     @Override
     public String toPushDownExpression() {
-        return String.format("not (%s)", getPredicate().toPushDownExpression());
+        return String.format("not(%s)", getPredicate().toPushDownExpression());
     }
 
     @Override

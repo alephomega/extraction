@@ -15,7 +15,7 @@ public class Between extends TernaryOperator<Function, Function, Function> imple
         PushDown _2 = (PushDown) secondOperand();
         PushDown _3 = (PushDown) thirdOperand();
 
-        return String.format("%s between (%s, %s)", _1.toPushDownExpression(), _2.toPushDownExpression(), _3.toPushDownExpression());
+        return String.format("%s between %s and %s", _1.toPushDownExpression(), _2.toPushDownExpression(), _3.toPushDownExpression());
     }
 
     @Override
