@@ -8,6 +8,6 @@ import com.kakaopage.crm.extraction.Symbol;
 public class AntiJoin extends Join {
 
     public AntiJoin(Predicate condition, Relation first, Relation second) {
-        super(condition, first, second);
+        super(condition, true, first, second);
     }
 }

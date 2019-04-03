@@ -7,6 +7,6 @@ import com.kakaopage.crm.extraction.Symbol;
 public class LeftOuterJoin extends Join {
 
     public LeftOuterJoin(Predicate condition, Relation first, Relation second) {
-        super(condition, first, second);
+        super(condition, true, first, second);
     }
 }

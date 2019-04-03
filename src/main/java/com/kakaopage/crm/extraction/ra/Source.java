@@ -10,19 +10,23 @@ public class Source extends Relation {
         this(name, Type.User, pushDown);
     }
 
-    private Source(String name, Type type, Predicate pushDown) {
+    public Source(String name, Type type, Predicate pushDown) {
         super(name);
         this.type = type;
         this.pushDown = pushDown;
     }
 
 
-    public static Relation system(String name, Predicate pushDown) {
+    public static Source system(String name, Predicate pushDown) {
         return new Source(name, Type.System, pushDown);
     }
 
-    public static Relation user(String name, Predicate pushDown) {
+    public static Source user(String name, Predicate pushDown) {
         return new Source(name, Type.User, pushDown);
+    }
+
+    public static Source temporary(String name, Predicate pushDown) {
+        return new Source(name, Type.Temporary, pushDown);
     }
 
     public Type getType() {
