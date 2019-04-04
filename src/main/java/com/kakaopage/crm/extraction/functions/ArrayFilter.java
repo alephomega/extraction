@@ -6,13 +6,13 @@ import com.kakaopage.crm.extraction.InvalidExpressionException;
 import com.kakaopage.crm.extraction.Predicate;
 import org.apache.commons.lang3.StringUtils;
 
-@FuncIdentifier("filter")
-public class Filter extends ArrayFunction {
+@FuncIdentifier("array_filter")
+public class ArrayFilter extends ArrayFunction {
     private final Predicate predicate;
     private final String database;
     private final String table;
 
-    public Filter(Value array, Predicate predicate, String database, String table) {
+    public ArrayFilter(Value array, Predicate predicate, String database, String table) {
         super(array);
         this.predicate = predicate;
         this.database = database;
