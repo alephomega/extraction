@@ -1,10 +1,12 @@
 package com.kakaopage.crm.extraction.predicates;
 
 import com.kakaopage.crm.extraction.InvalidExpressionException;
+import com.kakaopage.crm.extraction.Symbol;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Symbol("⊤")
 public class True implements LogicalOperator {
 
     @Override
