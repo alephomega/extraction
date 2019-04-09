@@ -2,7 +2,7 @@ package com.kakaopage.crm.extraction.predicates;
 
 import com.kakaopage.crm.extraction.*;
 
-@Symbol("≥≤")
+@Symbol("..")
 public class Between extends TernaryOperator<Function, Function, Function> implements Predicate {
 
     public Between(Function _1, Function _2, Function _3) {

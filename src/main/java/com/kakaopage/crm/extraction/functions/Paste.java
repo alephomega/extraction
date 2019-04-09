@@ -1,10 +1,12 @@
 package com.kakaopage.crm.extraction.functions;
 
+import com.kakaopage.crm.extraction.FuncIdentifier;
 import com.kakaopage.crm.extraction.Function;
 import com.kakaopage.crm.extraction.InvalidExpressionException;
 
 import java.util.List;
 
+@FuncIdentifier("paste")
 public class Paste implements Function {
     private final List<Function> attributes;
     private final String sep;

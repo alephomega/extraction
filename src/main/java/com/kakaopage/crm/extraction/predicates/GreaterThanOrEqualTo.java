@@ -1,7 +1,6 @@
 package com.kakaopage.crm.extraction.predicates;
 
 import com.kakaopage.crm.extraction.Function;
-import com.kakaopage.crm.extraction.InvalidExpressionException;
 import com.kakaopage.crm.extraction.PushDown;
 import com.kakaopage.crm.extraction.Symbol;
 
