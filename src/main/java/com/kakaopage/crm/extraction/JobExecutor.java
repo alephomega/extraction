@@ -6,6 +6,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.text.ParseException;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
+import java.util.Date;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
@@ -61,15 +65,44 @@ public abstract class JobExecutor {
 
     private String applyTimestamp(String at, String description) {
         String rs = description;
-        Matcher matcher = Pattern.compile("\\$\\{timestamp:\\s*([^}]+)\\}").matcher(rs);
+        Matcher matcher = Pattern.compile("\\$\\{timestamp:\\s*([^}|]+)\\|?(-*\\d+[yMdHms])?\\}").matcher(rs);
 
         boolean result = matcher.find();
         if (result) {
             StringBuffer sb = new StringBuffer();
             do {
                 String replacement;
+                TemporalUnit unit = ChronoUnit.SECONDS;
+
+                long amount = 0;
                 try {
-                    replacement = FastDateFormat.getInstance(matcher.group(1), TIMEZONE).format(TIME_FORMAT.parse(at));
+                    String option = matcher.group(2);
+                    if (option != null) {
+                        amount = Long.parseLong(option.substring(0, option.length()-1));
+
+                        switch (option.charAt(option.length()-1)) {
+                            case 'y':
+                                unit = ChronoUnit.YEARS;
+                                break;
+                            case 'M':
+                                unit = ChronoUnit.MONTHS;
+                                break;
+                            case 'd':
+                                unit = ChronoUnit.DAYS;
+                                break;
+                            case 'H':
+                                unit = ChronoUnit.HOURS;
+                                break;
+                            case 'm':
+                                unit = ChronoUnit.MINUTES;
+                                break;
+                            case 's':
+                                unit = ChronoUnit.SECONDS;
+                        }
+                    }
+
+                    Instant instant = TIME_FORMAT.parse(at).toInstant().plus(amount, unit);
+                    replacement = FastDateFormat.getInstance(matcher.group(1), TIMEZONE).format(Date.from(instant));
                 } catch (ParseException e) {
                     // Should not happen
                     replacement = matcher.group(1);
@@ -85,6 +118,7 @@ public abstract class JobExecutor {
 
         return rs;
     }
+
 
     private String applyRandomString(String description) {
         String rs = description;
