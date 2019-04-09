@@ -3,7 +3,7 @@ package com.kakaopage.crm.extraction.predicates;
 import com.kakaopage.crm.extraction.*;
 import com.kakaopage.crm.extraction.functions.Value;
 
-@FuncIdentifier("∅")
+@Symbol("∅")
 public class Null extends UnaryOperator<Value> implements Predicate {
 
     public Null(Value value) {

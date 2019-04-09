@@ -2,6 +2,7 @@ package com.kakaopage.crm.extraction;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.kakaopage.crm.extraction.ra.Relation;
 import org.apache.commons.lang3.StringUtils;
 
 public class Extraction implements Expression {
@@ -9,6 +10,7 @@ public class Extraction implements Expression {
     private final static Gson GSON =  new GsonBuilder().registerTypeAdapter(Function.class, new FunctionJsonDeserializer())
             .registerTypeAdapter(Predicate.class, new PredicateJsonDeserializer())
             .registerTypeAdapter(Assignment.class, new AssignmentJsonDeserializer())
+            .registerTypeAdapter(Relation.class, new RelationJsonDeserializer())
             .create();
 
     private final String id;

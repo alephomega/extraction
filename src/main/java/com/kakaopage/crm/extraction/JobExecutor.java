@@ -22,12 +22,12 @@ public abstract class JobExecutor {
     private PhaseListener phaseListener = new PhaseListener();
 
     public void run(String description, Map<String, String> params) {
-        Execution execution = new Gson().fromJson(replace(description, params), Execution.class);
+        Execution execution = new Gson().fromJson(description, Execution.class);
         String id = execution.getId();
         String job = execution.getJob();
 
         Job metadata = API.job(job);
-        String expression = metadata.getExpression();
+        String expression = replace(metadata.getExpression(), params);
 
         Extraction extraction;
         try {

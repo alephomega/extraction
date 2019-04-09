@@ -4,7 +4,7 @@ import com.kakaopage.crm.extraction.Expression;
 import com.kakaopage.crm.extraction.InvalidExpressionException;
 import org.apache.commons.lang3.StringUtils;
 
-public class Relation implements Expression {
+public abstract class Relation implements Expression {
     private final String name;
 
     public Relation(String name) {
