@@ -9,26 +9,20 @@ import org.apache.commons.lang3.StringUtils;
 @FuncIdentifier("array_filter")
 public class ArrayFilter extends ArrayFunction {
     private final Predicate predicate;
-    private final String database;
-    private final String table;
+    private final String relation;
 
-    public ArrayFilter(Value array, Predicate predicate, String database, String table) {
+    public ArrayFilter(Value array, Predicate predicate, String relation) {
         super(array);
         this.predicate = predicate;
-        this.database = database;
-        this.table = table;
+        this.relation = relation;
     }
 
     public Predicate getPredicate() {
         return predicate;
     }
 
-    public String getDatabase() {
-        return database;
-    }
-
-    public String getTable() {
-        return table;
+    public String getRelation() {
+        return relation;
     }
 
     public String getField() {
@@ -48,12 +42,8 @@ public class ArrayFilter extends ArrayFunction {
 
         array.validate();
 
-        if (StringUtils.isEmpty(database)) {
-            throw new InvalidExpressionException("database argument must not be empty");
-        }
-
-        if (StringUtils.isEmpty(table)) {
-            throw new InvalidExpressionException("table argument must not be empty");
+        if (StringUtils.isEmpty(relation)) {
+            throw new InvalidExpressionException("source argument must not be empty");
         }
 
         if (predicate == null) {
@@ -61,5 +51,9 @@ public class ArrayFilter extends ArrayFunction {
         }
 
         predicate.validate();
+    }
+
+    public static class SchemaDefinition {
+
     }
 }
