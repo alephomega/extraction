@@ -65,7 +65,7 @@ public abstract class JobExecutor {
 
     private String applyTimestamp(String at, String description) {
         String rs = description;
-        Matcher matcher = Pattern.compile("\\$\\{timestamp:([^}|]+)\\|?(-*\\d+[yMdHms])?\\}").matcher(rs);
+        Matcher matcher = Pattern.compile("\\$\\{timestamp:([^}|]+)\\|?(-?\\d+[yMdHms])?\\}").matcher(rs);
 
         boolean result = matcher.find();
         if (result) {
