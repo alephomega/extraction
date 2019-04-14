@@ -99,11 +99,11 @@ public class PushDownExpressions {
 
     @Test
     public void testIgnorable() {
-        Comment comment = new Comment(new Equals(new Value("ds", "a"), new Constant<>("a")), true);
+        Comment comment = new Comment(new Equals(new Value("ds", "a"), new Constant<>("a")));
         assertEquals("1 = 1", comment.toPushDownExpression());
 
-        comment = new Comment(new Equals(new Value("ds", "a"), new Constant<>("a")), false);
-        assertEquals("ds.a = 'a'", comment.toPushDownExpression());
+        comment = new Comment(new Equals(new Value("ds", "a"), new Constant<>("a")));
+        assertEquals("1 = 1", comment.toPushDownExpression());
     }
 
     @Test

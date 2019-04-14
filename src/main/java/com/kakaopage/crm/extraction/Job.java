@@ -1,8 +1,14 @@
 package com.kakaopage.crm.extraction;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Job {
     private final String id;
+
+    @SerializedName("jobName")
     private final String name;
+
+    @SerializedName("relationExp")
     private final String expression;
 
     public Job(String id, String name, String expression) {

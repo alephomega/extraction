@@ -7,13 +7,19 @@ import com.kakaopage.crm.extraction.ra.RelationType;
 @RelationType("source")
 public class Source extends Relation {
     private final Predicate pushDown;
+    private final boolean managed;
 
-    public Source(String name, Predicate pushDown) {
+    public Source(String name, Predicate pushDown, boolean managed) {
         super(name);
         this.pushDown = pushDown;
+        this.managed = managed;
     }
 
     public Predicate getPushDown() {
         return pushDown;
+    }
+
+    public boolean isManaged() {
+        return managed;
     }
 }

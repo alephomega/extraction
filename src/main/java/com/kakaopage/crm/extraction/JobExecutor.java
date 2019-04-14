@@ -65,7 +65,7 @@ public abstract class JobExecutor {
 
     private String applyTimestamp(String at, String description) {
         String rs = description;
-        Matcher matcher = Pattern.compile("\\$\\{timestamp:\\s*([^}|]+)\\|?(-*\\d+[yMdHms])?\\}").matcher(rs);
+        Matcher matcher = Pattern.compile("\\$\\{timestamp:([^}|]+)\\|?(-*\\d+[yMdHms])?\\}").matcher(rs);
 
         boolean result = matcher.find();
         if (result) {
@@ -122,13 +122,37 @@ public abstract class JobExecutor {
 
     private String applyRandomString(String description) {
         String rs = description;
-        Matcher matcher = Pattern.compile("\\$\\{random-string:\\s*(\\d+)\\}").matcher(description);
+        Matcher matcher = Pattern.compile("\\$\\{random-string:(\\d+)\\}").matcher(description);
 
         boolean result = matcher.find();
         if (result) {
             StringBuffer sb = new StringBuffer();
             do {
                 matcher.appendReplacement(sb, RandomStringUtils.randomAlphanumeric(Integer.parseInt(matcher.group(1))));
+                result = matcher.find();
+            } while (result);
+
+            matcher.appendTail(sb);
+            rs = sb.toString();
+        }
+
+        return rs;
+    }
+
+    private String applyIf(String description) {
+        String rs = description;
+        Matcher matcher = Pattern.compile("\\$\\{if:(true|false)\\|([^}|]+)\\|([^}|]+)\\}").matcher(description);
+
+        boolean result = matcher.find();
+        if (result) {
+            StringBuffer sb = new StringBuffer();
+            do {
+                if (Boolean.valueOf(matcher.group(1))) {
+                    matcher.appendReplacement(sb, matcher.group(2));
+                } else {
+                    matcher.appendReplacement(sb, matcher.group(3));
+                }
+
                 result = matcher.find();
             } while (result);
 

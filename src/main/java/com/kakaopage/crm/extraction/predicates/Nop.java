@@ -5,10 +5,10 @@ import com.kakaopage.crm.extraction.Predicate;
 import com.kakaopage.crm.extraction.Symbol;
 import com.kakaopage.crm.extraction.UnaryOperator;
 
-@Symbol("#")
-public class Comment extends UnaryOperator<Predicate> implements Predicate {
+@Symbol("_")
+public class Nop extends UnaryOperator<Predicate> implements Predicate {
 
-    public Comment(Predicate predicate) {
+    public Nop(Predicate predicate) {
         super(predicate);
     }
 
@@ -18,11 +18,11 @@ public class Comment extends UnaryOperator<Predicate> implements Predicate {
 
     @Override
     public String toPushDownExpression() {
-        return "1 = 1";
+        return getPredicate().toPushDownExpression();
     }
 
     @Override
     public void validate() throws InvalidExpressionException {
-
+        getPredicate().validate();
     }
 }
