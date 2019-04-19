@@ -15,7 +15,7 @@ class API {
     static  {
         HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
         requestFactory.setConnectTimeout(
-                Integer.parseInt(ApplicationProperties.get("api.metadata.connect-timeout", "10000")));
+                Integer.parseInt(ApplicationProperties.get("api.metadata.connect-timeout", "15000")));
 
         requestFactory.setReadTimeout(
                 Integer.parseInt(ApplicationProperties.get("api.metadata.read-timeout", "5000")));
@@ -24,7 +24,7 @@ class API {
     }
 
     static Job job(String id) {
-        String url = String.format("%s/job/%s", ApplicationProperties.get("api.metadata.base-url"), id);
+        String url = String.format("%s/job/%s", baseUrl(), id);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache");
@@ -77,8 +77,13 @@ class API {
         jobExecutionStatus(job, execution, "failed", message);
     }
 
+    private static String baseUrl() {
+        String base = System.getenv("API_BASE_URL");
+        return base == null ? ApplicationProperties.get("api.metadata.base-url") : base;
+    }
+
     private static void jobExecutionStatus(String job, String execution, String status, String body) {
-        String url = String.format("%s/metadata/%s/status/%s", ApplicationProperties.get("api.metadata.base-url"), execution, status);
+        String url = String.format("%s/metadata/%s/status/%s", baseUrl(), execution, status);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cache-Control", "no-cache");

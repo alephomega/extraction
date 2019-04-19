@@ -60,6 +60,8 @@ public abstract class JobExecutor {
             rs = StringUtils.replace(rs, String.format("${%s}", key), entry.getValue());
         }
 
+        rs = applyIf(rs);
+
         return rs;
     }
 
