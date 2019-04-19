@@ -1,9 +1,10 @@
 package com.kakaopage.crm.extraction;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 class PhaseListener {
-    private static final Gson GSON = new Gson();
+    private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();
 
     void onStart(String id, String job) {
         try {

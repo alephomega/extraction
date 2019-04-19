@@ -26,4 +26,9 @@ public class Partition {
     public static Partition of(int id, String path, long count) {
         return new Partition(id, path, count);
     }
+
+    @Override
+    public String toString() {
+        return String.format("Partition { id: %s, path: %s, count: %d }", id, path, count);
+    }
 }

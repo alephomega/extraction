@@ -13,17 +13,16 @@ public class Target {
     @SerializedName("job_execution_id")
     private final String execution;
 
-    @SerializedName("partition")
+    @SerializedName("split_name")
     private final String key;
 
-    private final int interval;
+    @SerializedName("split")
     private List<Split> splits;
 
-    private Target(String job, String execution, String key, int interval, List<Split> splits) {
+    private Target(String job, String execution, String key, List<Split> splits) {
         this.job = job;
         this.execution = execution;
         this.key = key;
-        this.interval = interval;
         this.splits = splits;
     }
 
@@ -39,17 +38,12 @@ public class Target {
         return key;
     }
 
-    public int getInterval() {
-        return interval;
-    }
-
     public List<Split> getSplits() {
         return splits;
     }
 
     public static Target with(String job, String execution, Cohort cohort) {
         List<Split> splits = cohort.getPartitions().stream().map(partition -> new Split(partition.getPath(), partition.getCount())).collect(Collectors.toList());
-
-        return new Target(job, execution, cohort.getName(), cohort.getInterval(), splits);
+        return new Target(job, execution, cohort.getName(), splits);
     }
 }

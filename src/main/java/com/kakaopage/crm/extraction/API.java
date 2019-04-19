@@ -1,42 +1,71 @@
 package com.kakaopage.crm.extraction;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.web.client.RestTemplate;
+import com.google.gson.Gson;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPatch;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 class API {
-    private static final RestTemplate restTemplate;
+    private static final Gson GSON = new Gson();
+    private static HttpClient client = HttpClientBuilder.create()
+            .setDefaultRequestConfig(RequestConfig.custom()
+                    .setConnectTimeout(Integer.parseInt(ApplicationProperties.get("api.metadata.connect-timeout", "15000")))
+                    .setSocketTimeout(Integer.parseInt(ApplicationProperties.get("api.metadata.read-timeout", "5000"))).build()).build();
 
-    static  {
-        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
-        requestFactory.setConnectTimeout(
-                Integer.parseInt(ApplicationProperties.get("api.metadata.connect-timeout", "15000")));
-
-        requestFactory.setReadTimeout(
-                Integer.parseInt(ApplicationProperties.get("api.metadata.read-timeout", "5000")));
-
-        restTemplate = new RestTemplate(requestFactory);
-    }
 
     static Job job(String id) {
-        String url = String.format("%s/job/%s", baseUrl(), id);
+        String url = String.format("%s/job/%s", ApplicationProperties.get("api.metadata.base-url"), id);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Cache-Control", "no-cache");
-        headers.add("Content-Type", "application/json");
+        System.out.println("API: " + url);
 
-        HttpEntity entity = new HttpEntity(headers);
+        HttpGet request = new HttpGet(url);
+        request.setHeader("Cache-Control", "no-cache");
+        request.setHeader("Content-Type", "application/json");
 
-        ResponseEntity<Response> result = null;
+        HttpResponse httpResponse = execute(request);
+
+        if (httpResponse == null) {
+            throw new APICallFailedException("Should not happen");
+        }
+
+        String body;
+        try {
+            body = EntityUtils.toString(httpResponse.getEntity());
+        } catch (IOException e) {
+            throw new APICallFailedException(e);
+        }
+
+        Result result = GSON.fromJson(body, Result.class);
+        Map<String, ?> response = result.getResponse();
+
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode < 200 || statusCode >= 300) {
+            throw new APICallFailedException(result.getMessage());
+        }
+
+        String name = (String) response.get("jobName");
+        String expression = (String) response.get("relationExp");
+
+        return new Job(id, name, expression);
+    }
+
+    private static HttpResponse execute(HttpRequestBase request) {
         int retries = Integer.parseInt(ApplicationProperties.get("api.metadata.retries", "2"));
+
+        HttpResponse httpResponse = null;
         for (int i = retries; i >= 0; i--) {
             try {
-                result = restTemplate.exchange(url, HttpMethod.GET, entity, Response.class);
+                httpResponse = client.execute(request);
                 break;
             } catch (Exception e) {
                 if (i == 0) {
@@ -44,24 +73,12 @@ class API {
                 }
 
                 try {
-                    Thread.sleep(1000 * (retries-i+1));
+                    Thread.sleep(2000 * (retries-i+1));
                 } catch (InterruptedException ignored) { }
             }
         }
 
-        if (result == null) {
-            throw new APICallFailedException("Should not happen");
-        }
-
-        if (!result.getStatusCode().is2xxSuccessful()) {
-            throw new APICallFailedException(result.getBody().getMessage());
-        }
-
-        Map<String, ?> response = result.getBody().getResponse();
-        String name = (String) response.get("jobName");
-        String expression = (String) response.get("relationExp");
-
-        return new Job(id, name, expression);
+        return httpResponse;
     }
 
 
@@ -77,54 +94,58 @@ class API {
         jobExecutionStatus(job, execution, "failed", message);
     }
 
-    private static String baseUrl() {
-        String base = System.getenv("API_BASE_URL");
-        return base == null ? ApplicationProperties.get("api.metadata.base-url") : base;
-    }
-
     private static void jobExecutionStatus(String job, String execution, String status, String body) {
-        String url = String.format("%s/metadata/%s/status/%s", baseUrl(), execution, status);
+        String url = String.format("%s/metadata/%s/status/%s", ApplicationProperties.get("api.metadata.base-url"), execution, status);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Cache-Control", "no-cache");
-        headers.add("Content-Type", "application/json");
+        HttpPatch request = new HttpPatch(url);
+        request.setHeader("Cache-Control", "no-cache");
+        request.setHeader("Content-Type", "application/json");
 
-        HttpEntity<String> entity = new HttpEntity<>(body, headers);
+        ByteArrayEntity entity = new ByteArrayEntity(body.getBytes(Charset.forName("UTF-8")));
+        entity.setContentType("application/json");
+        request.setEntity(entity);
 
-        ResponseEntity<Response> result = null;
-        int retries = Integer.parseInt(ApplicationProperties.get("api.metadata.retries", "2"));
-        for (int i = retries; i >= 0; i--) {
-            try {
-                result = restTemplate.exchange(url, HttpMethod.PATCH, entity, Response.class);
-                break;
-            } catch (Exception e) {
-                if (i == 0) {
-                    throw new APICallFailedException(e);
-                }
-
-                try {
-                    Thread.sleep(1000 * (retries-i+1));
-                } catch (InterruptedException ignored) { }
-            }
-        }
-
-        if (result == null) {
+        HttpResponse httpResponse = execute(request);
+        if (httpResponse == null) {
             throw new APICallFailedException("Should not happen");
         }
 
-        if (!result.getStatusCode().is2xxSuccessful()) {
-            throw new APICallFailedException(result.getBody().getMessage());
+        String responseBody;
+        try {
+            responseBody = EntityUtils.toString(httpResponse.getEntity());
+        } catch (IOException e) {
+            throw new APICallFailedException(e);
+        }
+
+        Result result = GSON.fromJson(responseBody, Result.class);
+
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode < 200 || statusCode >= 300) {
+            throw new APICallFailedException(result.getMessage());
         }
     }
 
-    private static class Response {
-        private final String message;
-        private final Map<String, ?> response;
-        private final String timestamp;
+    private static class Result {
+        private String message;
+        private Map<String, ?> response;
+        private String timestamp;
 
-        Response(String message, Map<String, ?> response, String timestamp) {
+        Result() { }
+        Result(String message, Map<String, ?> response, String timestamp) {
             this.message = message;
             this.response = response;
+            this.timestamp = timestamp;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
+        public void setResponse(Map<String, ?> response) {
+            this.response = response;
+        }
+
+        public void setTimestamp(String timestamp) {
             this.timestamp = timestamp;
         }
 

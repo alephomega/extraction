@@ -1,5 +1,7 @@
 package com.kakaopage.crm.extraction;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
 
 public class Cohort {
@@ -33,5 +35,10 @@ public class Cohort {
 
     public static Cohort with(String name, int interval, List<Partition> partitions) {
         return new Cohort(name, interval, partitions);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Cohort { name: %s, interval: %d, partitions: [ %s ]  }", name, interval, StringUtils.join(partitions, ", "));
     }
 }

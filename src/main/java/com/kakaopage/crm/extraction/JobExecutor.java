@@ -29,6 +29,8 @@ public abstract class JobExecutor {
         Job metadata = API.job(job);
         String expression = replace(metadata.getExpression(), params);
 
+        System.out.println("expression:\n" + expression);
+
         Extraction extraction;
         try {
             extraction = Extraction.of(id, job, expression);
@@ -65,9 +67,9 @@ public abstract class JobExecutor {
         return rs;
     }
 
-    private String applyTimestamp(String at, String description) {
+    private static String applyTimestamp(String at, String description) {
         String rs = description;
-        Matcher matcher = Pattern.compile("\\$\\{timestamp:([^}|]+)\\|?(-?\\d+[yMdHms])?\\}").matcher(rs);
+        Matcher matcher = Pattern.compile("\\$\\{timestamp:([^},]+),?(-*\\d+[yMdHms])?\\}").matcher(rs);
 
         boolean result = matcher.find();
         if (result) {
@@ -122,7 +124,7 @@ public abstract class JobExecutor {
     }
 
 
-    private String applyRandomString(String description) {
+    private static String applyRandomString(String description) {
         String rs = description;
         Matcher matcher = Pattern.compile("\\$\\{random-string:(\\d+)\\}").matcher(description);
 
@@ -141,9 +143,9 @@ public abstract class JobExecutor {
         return rs;
     }
 
-    private String applyIf(String description) {
+    private static String applyIf(String description) {
         String rs = description;
-        Matcher matcher = Pattern.compile("\\$\\{if:(true|false)\\|([^}|]+)\\|([^}|]+)\\}").matcher(description);
+        Matcher matcher = Pattern.compile("\\$\\{if:(true|false),([^},]+),([^},]+)\\}").matcher(description);
 
         boolean result = matcher.find();
         if (result) {
