@@ -3,7 +3,10 @@ package com.kakaopage.crm.extraction;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.logging.Logger;
+
 class PhaseListener {
+    private static final Logger LOGGER = Logger.getLogger(PhaseListener.class.getSimpleName());
     private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();
 
     void onStart(String id, String job) {

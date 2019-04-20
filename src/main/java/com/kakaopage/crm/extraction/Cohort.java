@@ -39,6 +39,6 @@ public class Cohort {
 
     @Override
     public String toString() {
-        return String.format("Cohort { name: %s, interval: %d, partitions: [ %s ]  }", name, interval, StringUtils.join(partitions, ", "));
+        return String.format("{ name: %s, interval: %d, partitions: [ %s ]  }", name, interval, StringUtils.join(partitions, ", "));
     }
 }

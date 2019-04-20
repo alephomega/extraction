@@ -12,10 +12,12 @@ import java.time.temporal.TemporalUnit;
 import java.util.Date;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class JobExecutor {
+    private static final Logger LOGGER = Logger.getLogger(JobExecutor.class.getSimpleName());
     private static final TimeZone TIMEZONE = TimeZone.getTimeZone(ApplicationProperties.get("service.timezone"));
     private static final FastDateFormat TIME_FORMAT = FastDateFormat.getInstance(ApplicationProperties.get("service.time-pattern"));
 
@@ -26,10 +28,15 @@ public abstract class JobExecutor {
         String id = execution.getId();
         String job = execution.getJob();
 
+        LOGGER.info(String.format("Extraction job execution: id = %s, job = %s", id, job));
+
+        LOGGER.info("Getting job metadata");
         Job metadata = API.job(job);
+
+        LOGGER.info("Running macros");
         String expression = replace(metadata.getExpression(), params);
 
-        System.out.println("expression:\n" + expression);
+        LOGGER.info("Extraction expression:\n" + expression);
 
         Extraction extraction;
         try {
@@ -42,9 +49,14 @@ public abstract class JobExecutor {
         phaseListener.onStart(job, id);
 
         try {
+            LOGGER.info("Serializing extraction steps");
             Process process = Serializer.serialize(extraction);
 
+            LOGGER.info("Running steps");
             Cohort cohort = run(job, id, process);
+
+            LOGGER.info("Cohort extracted: " + cohort);
+
             phaseListener.onSuccess(job, id, cohort);
 
         } catch (Exception e) {

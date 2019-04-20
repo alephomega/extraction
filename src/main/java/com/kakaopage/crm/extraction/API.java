@@ -1,6 +1,7 @@
 package com.kakaopage.crm.extraction;
 
 import com.google.gson.Gson;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
@@ -13,9 +14,13 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.logging.Logger;
 
 class API {
+    private static final Logger LOGGER = Logger.getLogger(API.class.getSimpleName());
+
     private static final Gson GSON = new Gson();
     private static HttpClient client = HttpClientBuilder.create()
             .setDefaultRequestConfig(RequestConfig.custom()
@@ -26,7 +31,7 @@ class API {
     static Job job(String id) {
         String url = String.format("%s/job/%s", ApplicationProperties.get("api.metadata.base-url"), id);
 
-        System.out.println("API: " + url);
+        LOGGER.info("Calling API: " + url);
 
         HttpGet request = new HttpGet(url);
         request.setHeader("Cache-Control", "no-cache");
@@ -40,7 +45,7 @@ class API {
 
         String body;
         try {
-            body = EntityUtils.toString(httpResponse.getEntity());
+            body = EntityUtils.toString(httpResponse.getEntity(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new APICallFailedException(e);
         }
@@ -49,6 +54,7 @@ class API {
         Map<String, ?> response = result.getResponse();
 
         int statusCode = httpResponse.getStatusLine().getStatusCode();
+
         if (statusCode < 200 || statusCode >= 300) {
             throw new APICallFailedException(result.getMessage());
         }
@@ -64,10 +70,14 @@ class API {
 
         HttpResponse httpResponse = null;
         for (int i = retries; i >= 0; i--) {
+
+            LOGGER.info("Requesting: " + request);
             try {
                 httpResponse = client.execute(request);
                 break;
             } catch (Exception e) {
+                LOGGER.info("Request failed:\n" + ExceptionUtils.getStackTrace(e));
+
                 if (i == 0) {
                     throw new APICallFailedException(e);
                 }
@@ -78,6 +88,7 @@ class API {
             }
         }
 
+        LOGGER.info("Response:\n" + httpResponse);
         return httpResponse;
     }
 
@@ -160,5 +171,11 @@ class API {
         private String getTimestamp() {
             return timestamp;
         }
+    }
+
+    public static void main(String[] args) {
+        Job job = API.job("20");
+        String expression = job.getExpression();
+        System.out.println(expression);
     }
 }

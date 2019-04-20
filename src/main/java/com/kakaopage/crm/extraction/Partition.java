@@ -29,6 +29,6 @@ public class Partition {
 
     @Override
     public String toString() {
-        return String.format("Partition { id: %s, path: %s, count: %d }", id, path, count);
+        return String.format("{ id: %s, path: %s, count: %d }", id, path, count);
     }
 }
