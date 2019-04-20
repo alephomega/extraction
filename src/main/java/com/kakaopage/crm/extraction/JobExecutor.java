@@ -53,7 +53,7 @@ public abstract class JobExecutor {
         }
     }
 
-    private String replace(String description, Map<String, String> params) {
+    private static String replace(String description, Map<String, String> params) {
         String at = params.get("at");
         String rs = applyRandomString(applyTimestamp(at, description));
 
