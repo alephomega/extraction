@@ -1,8 +1,8 @@
 package com.kakaopage.crm.extraction;
 
 import com.google.gson.Gson;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
@@ -74,10 +74,11 @@ class API {
             LOGGER.info("Requesting: " + request);
             try {
                 httpResponse = client.execute(request);
-                break;
+                int statusCode = httpResponse.getStatusLine().getStatusCode();
+                if (!timeout(statusCode)) {
+                    break;
+                }
             } catch (Exception e) {
-                LOGGER.info("Request failed:\n" + ExceptionUtils.getStackTrace(e));
-
                 if (i == 0) {
                     throw new APICallFailedException(e);
                 }
@@ -92,6 +93,9 @@ class API {
         return httpResponse;
     }
 
+    private static boolean timeout(int statusCode) {
+        return (statusCode == HttpStatus.SC_REQUEST_TIMEOUT || statusCode == HttpStatus.SC_GATEWAY_TIMEOUT);
+    }
 
     static void jobStarted(String job, String execution) {
         jobExecutionStatus(job, execution, "running", null);
@@ -105,14 +109,15 @@ class API {
         jobExecutionStatus(job, execution, "failed", message);
     }
 
-    private static void jobExecutionStatus(String job, String execution, String status, String body) {
+    private static void jobExecutionStatus(String job, String execution, String status, String requestBeody) {
         String url = String.format("%s/metadata/%s/status/%s", ApplicationProperties.get("api.metadata.base-url"), execution, status);
+        LOGGER.info("Calling API: " + url);
 
         HttpPatch request = new HttpPatch(url);
         request.setHeader("Cache-Control", "no-cache");
         request.setHeader("Content-Type", "application/json");
 
-        ByteArrayEntity entity = new ByteArrayEntity(body.getBytes(Charset.forName("UTF-8")));
+        ByteArrayEntity entity = new ByteArrayEntity(requestBeody.getBytes(Charset.forName("UTF-8")));
         entity.setContentType("application/json");
         request.setEntity(entity);
 

@@ -3,6 +3,7 @@ package com.kakaopage.crm.extraction;
 import com.google.gson.Gson;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.text.ParseException;
@@ -31,7 +32,13 @@ public abstract class JobExecutor {
         LOGGER.info(String.format("Extraction job execution: id = %s, job = %s", id, job));
 
         LOGGER.info("Getting job metadata");
-        Job metadata = API.job(job);
+        Job metadata;
+        try {
+            metadata = API.job(job);
+        } catch (Exception e) {
+            LOGGER.severe("Failed to get job metadata:\n" + ExceptionUtils.getStackTrace(e));
+            throw e;
+        }
 
         LOGGER.info("Running macros");
         String expression = replace(metadata.getExpression(), params);
@@ -42,6 +49,7 @@ public abstract class JobExecutor {
         try {
             extraction = Extraction.of(id, job, expression);
         } catch (Exception e) {
+            LOGGER.severe(String.format("Extraction job failed: id = %s, job = %s\n%s", id, job, ExceptionUtils.getStackTrace(e)));
             phaseListener.onFailure(job, id, e);
             throw e;
         }
@@ -60,6 +68,7 @@ public abstract class JobExecutor {
             phaseListener.onSuccess(job, id, cohort);
 
         } catch (Exception e) {
+            LOGGER.severe(String.format("Extraction job failed: id = %s, job = %s\n%s", id, job, ExceptionUtils.getStackTrace(e)));
             phaseListener.onFailure(job, id, e);
             throw e;
         }
