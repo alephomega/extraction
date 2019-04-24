@@ -21,7 +21,7 @@ class Macros {
 
     static String apply(String description, Map<String, String> params) {
         String at = params.get("at");
-        String rs = timezone(randomString(timestamp(at, description)));
+        String rs = config(timezone(randomString(timestamp(at, description))));
 
         for (Map.Entry<String, String> entry : params.entrySet()) {
             String key = entry.getKey();
@@ -141,6 +141,25 @@ class Macros {
             StringBuffer sb = new StringBuffer();
             do {
                 matcher.appendReplacement(sb, TIMEZONE);
+                result = matcher.find();
+            } while (result);
+
+            matcher.appendTail(sb);
+            rs = sb.toString();
+        }
+
+        return rs;
+    }
+
+    private static String config(String description) {
+        String rs = description;
+        Matcher matcher = Pattern.compile("\\$\\{config:([^}]+)\\}").matcher(description);
+
+        boolean result = matcher.find();
+        if (result) {
+            StringBuffer sb = new StringBuffer();
+            do {
+                matcher.appendReplacement(sb, ApplicationProperties.get(matcher.group(1)));
                 result = matcher.find();
             } while (result);
 
