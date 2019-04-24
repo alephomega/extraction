@@ -7,20 +7,17 @@ import com.google.gson.JsonObject;
 import com.kakaopage.crm.extraction.ra.Relation;
 import com.kakaopage.crm.extraction.ra.RelationType;
 import com.kakaopage.crm.extraction.ra.relations.RelationsPackage;
-import org.reflections.Reflections;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class RelationJsonDeserializer implements JsonDeserializer<Relation> {
     private static final Map<String, Class<? extends Relation>> relationClasses = new HashMap<>();
 
     static {
-        Reflections reflections = new Reflections(RelationsPackage.getName());
-        Set<Class<? extends Relation>> classes = reflections.getSubTypesOf(Relation.class);
-
+        List<Class> classes = PackageScanner.getSubTypesOf(RelationsPackage.getName(), Relation.class);
         for (Class<? extends Relation> clss : classes) {
             String identifier = getIdentifier(clss);
             if (identifier != null) {

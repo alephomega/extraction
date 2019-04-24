@@ -98,11 +98,11 @@ class API {
     }
 
     static void jobStarted(String job, String execution) {
-        jobExecutionStatus(job, execution, "running", null);
+        jobExecutionStatus(job, execution, "started", null);
     }
 
     static void jobCompleted(String job, String execution, String targetDescription) {
-        jobExecutionStatus(job, execution, "completed", targetDescription);
+        jobExecutionStatus(job, execution, "succeed", targetDescription);
     }
 
     static void jobFailed(String job, String execution, String message) {
@@ -117,9 +117,11 @@ class API {
         request.setHeader("Cache-Control", "no-cache");
         request.setHeader("Content-Type", "application/json");
 
-        ByteArrayEntity entity = new ByteArrayEntity(requestBeody.getBytes(Charset.forName("UTF-8")));
-        entity.setContentType("application/json");
-        request.setEntity(entity);
+        if (requestBeody != null) {
+            ByteArrayEntity entity = new ByteArrayEntity(requestBeody.getBytes(Charset.forName("UTF-8")));
+            entity.setContentType("application/json");
+            request.setEntity(entity);
+        }
 
         HttpResponse httpResponse = execute(request);
         if (httpResponse == null) {

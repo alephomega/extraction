@@ -1,26 +1,26 @@
 package com.kakaopage.crm.extraction;
 
-import com.google.gson.*;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.kakaopage.crm.extraction.predicates.PredicatesPackage;
-import org.reflections.Reflections;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 class PredicateJsonDeserializer implements JsonDeserializer<Predicate> {
 
     private static final Map<String, Class<? extends Predicate>> predicateClasses = new HashMap<>();
 
     static {
-        Reflections reflections = new Reflections(PredicatesPackage.getName());
-        Set<Class<? extends Predicate>> classes = reflections.getSubTypesOf(Predicate.class);
-
-        for (Class<? extends Predicate> clss : classes) {
-            String operator = getSymbol(clss);
+        List<Class> classes = PackageScanner.getSubTypesOf(PredicatesPackage.getName(), Predicate.class);
+        for (Class<? extends Predicate> predicateClass : classes) {
+            String operator = getSymbol(predicateClass);
             if (operator != null) {
-                predicateClasses.put(operator, clss);
+                predicateClasses.put(operator, predicateClass);
             }
         }
     }

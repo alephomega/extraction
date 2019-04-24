@@ -1,26 +1,26 @@
 package com.kakaopage.crm.extraction;
 
-import com.google.gson.*;
-import com.kakaopage.crm.extraction.functions.FunctionsPackage;
-import org.reflections.Reflections;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.kakaopage.crm.extraction.functions.*;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 class FunctionJsonDeserializer implements JsonDeserializer<Function> {
 
     private static final Map<String, Class<? extends Function>> functionClasses = new HashMap<>();
 
     static {
-        Reflections reflections = new Reflections(FunctionsPackage.getName());
-        Set<Class<? extends Function>> classes = reflections.getSubTypesOf(Function.class);
-
-        for (Class<? extends Function> clss : classes) {
-            String identifier = getIdentifier(clss);
+        List<Class> classes = PackageScanner.getSubTypesOf(FunctionsPackage.getName(), Function.class);
+        for (Class<? extends Function> functionClass : classes) {
+            String identifier = getIdentifier(functionClass);
             if (identifier != null) {
-                functionClasses.put(identifier, clss);
+                functionClasses.put(identifier, functionClass);
             }
         }
     }

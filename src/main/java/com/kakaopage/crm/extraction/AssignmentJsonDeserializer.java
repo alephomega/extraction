@@ -1,28 +1,28 @@
 package com.kakaopage.crm.extraction;
 
 
-import com.google.gson.*;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.kakaopage.crm.extraction.ra.RelationalAlgebraOperator;
 import com.kakaopage.crm.extraction.ra.RelationalAlgebraOperatorsPackage;
-import org.reflections.Reflections;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 class AssignmentJsonDeserializer implements JsonDeserializer<Assignment> {
 
     private static final Map<String, Class<? extends RelationalAlgebraOperator>> operationClasses = new HashMap<>();
 
     static {
-        Reflections reflections = new Reflections(RelationalAlgebraOperatorsPackage.getName());
-        Set<Class<? extends RelationalAlgebraOperator>> classes = reflections.getSubTypesOf(RelationalAlgebraOperator.class);
-
-        for (Class<? extends RelationalAlgebraOperator> clss : classes) {
-            String symbol = getSymbol(clss);
+        List<Class> classes = PackageScanner.getSubTypesOf(RelationalAlgebraOperatorsPackage.getName(), RelationalAlgebraOperator.class);
+        for (Class<? extends RelationalAlgebraOperator> operationClass : classes) {
+            String symbol = getSymbol(operationClass);
             if (symbol != null) {
-                operationClasses.put(symbol, clss);
+                operationClasses.put(symbol, operationClass);
             }
         }
     }
@@ -50,7 +50,7 @@ class AssignmentJsonDeserializer implements JsonDeserializer<Assignment> {
         String symbol = operationJson.get("@Symbol").getAsString();
         Class<? extends Operator> clss = findClass(symbol);
         if (clss == null) {
-            throw new InvalidExpressionException(String.format("No operator with symbol: %s was found", symbol));
+            throw new InvalidExpressionException(String.format("No operator with symbol:%s was found", symbol));
         }
 
         RelationalAlgebraOperator operator = context.deserialize(operationJson, clss);
