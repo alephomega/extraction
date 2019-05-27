@@ -102,7 +102,7 @@ class API {
     }
 
     static void jobCompleted(String job, String execution, String targetDescription) {
-        jobExecutionStatus(job, execution, "succeed", targetDescription);
+        jobExecutionStatus(job, execution, "succeeded", targetDescription);
     }
 
     static void jobFailed(String job, String execution, String message) {
